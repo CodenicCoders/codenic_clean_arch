@@ -1,0 +1,68 @@
+name: codenic_logger
+
+on:
+  push:
+    paths:
+      - "packages/codenic_logger/**"
+      - ".github/workflows/codenic_logger.yaml"
+
+  pull_request:
+    paths:
+      - "packages/codenic_logger/**"
+      - ".github/workflows/codenic_logger.yaml"
+    
+  workflow_dispatch:
+
+jobs:
+  build:
+    defaults:
+      run:
+        working-directory: packages/codenic_logger
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.8.0
+
+      - name: Install Dependencies
+        run: dart pub get
+      
+      - name: Format
+        run: dart format --set-exit-if-changed .
+
+      - name: Analyze
+        run: dart analyze --fatal-infos --fatal-warnings .
+
+      - name: Run tests
+        run: flutter test --no-pub --coverage --test-randomize-ordering-seed random
+              
+      - name: Check Code Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
+        with:
+          path: packages/codenic_logger/coverage/lcov.info
+        
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          flags: codenic_logger
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  pana:
+    defaults:
+      run:
+        working-directory: packages/codenic_logger
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.8.0
+
+      - name: Install Dependencies
+        run: |
+          flutter packages get
+          flutter pub global activate pana
+          
+      - name: Verify Pub Score
+        run: ../../tool/verify_pub_score.sh

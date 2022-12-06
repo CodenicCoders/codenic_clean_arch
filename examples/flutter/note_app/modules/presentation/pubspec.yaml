@@ -1,0 +1,31 @@
+name: presentation
+description: The presentation layer of the application.
+
+version: 1.0.0+1
+
+publish_to: none
+
+environment:
+  sdk: '>=2.18.5 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  domain:
+    path: ../domain
+
+  flutter_bloc: ^8.1.1
+  get_it: ^7.2.0
+  infinite_scroll_pagination: ^3.2.0
+
+dev_dependencies:
+  flutter_lints: ^2.0.1
+
+flutter:
+  uses-material-design: true
+
+  module:
+    androidX: true
+    androidPackage: com.example.presentation
+    iosBundleIdentifier: com.example.presentation

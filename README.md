@@ -1,0 +1,13 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/CodenicCoders/codenic_clean_arch/main/docs/assets/codenic_clean_architecture.webp" alt="Sample detailed log messages" width=640/>
+</p>
+
+A suite of packages for implementing clean architecture the Codenic way.
+
+| Package                                                                                                                           | Pub                                                                                                                  | Status                                                                                                                                                                                                                   |
+| --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [codenic_bloc_use_case](https://github.com/CodenicCoders/codenic_clean_arch/tree/main/packages/codenic_bloc_use_case)             | [![pub version](https://img.shields.io/pub/v/codenic_bloc_use_case)](https://pub.dev/packages/codenic_bloc_use_case) | [![workflow status](https://github.com/CodenicCoders/codenic_clean_arch/actions/workflows/codenic_bloc_use_case.yaml/badge.svg)](https://github.com/CodenicCoders/codenic_clean_arch/actions) |
+| [codenic_logger](https://github.com/CodenicCoders/codenic_clean_arch/tree/main/packages/codenic_logger)                           | [![pub version](https://img.shields.io/pub/v/codenic_logger)](https://pub.dev/packages/codenic_logger)               | [![workflow status](https://github.com/CodenicCoders/codenic_clean_arch/actions/workflows/codenic_logger.yaml/badge.svg)](https://github.com/CodenicCoders/codenic_clean_arch/actions) |
+| [codenic_exception_converter](https://github.com/CodenicCoders/codenic_clean_arch/tree/main/packages/codenic_exception_converter) | [![pub version](https://img.shields.io/pub/v/bloc_concurrency.svg)](https://pub.dev/packages/bloc_concurrency)       | [![workflow status](https://github.com/CodenicCoders/codenic_clean_arch/actions/workflows/codenic_exception_converter.yaml/badge.svg)](https://github.com/CodenicCoders/codenic_clean_arch/actions) |
+
+**For more info, visit the [Codenic Clean Architecture documentation](https://app.gitbook.com/o/mikld3zbZI7rCfCZHPAJ/s/dJNBwjLNKHyatg3gvYXN/).**
