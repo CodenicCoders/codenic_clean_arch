@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/CodenicCoders/codenic_clean_arch/main/docs/assets/codenic_clean_architecture.webp" alt="Sample detailed log messages" width=640/>
 </p>
 
-A suite of packages for implementing clean architecture the Codenic way.
+A suite of packages for implementing the Codenic Clean Architecture.
 
 | Package                                                                                                                           | Pub                                                                                                                  | Status                                                                                                                                                                                                                   |
 | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
