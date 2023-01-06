@@ -1,3 +1,6 @@
+## 2.0.1
+- Update documentation link in README.md
+
 ## 2.0.0
 - Deprecate `stackTraceBlocklistRegex` in favor of `stackTraceBlocklist`
 - Create `stackTraceBlocklist` for excluding lines from stack trace

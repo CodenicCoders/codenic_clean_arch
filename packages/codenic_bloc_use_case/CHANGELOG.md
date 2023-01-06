@@ -1,3 +1,6 @@
+## 3.0.1
+- Update documentation link in README.md
+
 ## 3.0.0
 - Make use cases focus on simple CRUD operations
   - Deprecate `BatchRunner`

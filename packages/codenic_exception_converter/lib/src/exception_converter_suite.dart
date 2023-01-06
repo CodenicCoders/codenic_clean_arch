@@ -68,7 +68,7 @@ class ExceptionConverterSuite {
   /// into a [Failure].
   ///
   /// {@template observe}
-  /// A [messageLog](https://app.gitbook.com/o/mikld3zbZI7rCfCZHPAJ/s/dJNBwjLNKHyatg3gvYXN/packages/codenic-logger)
+  /// A [messageLog](https://arch.codenic.dev/packages/codenic-logger)
   /// can be provided to log the result of the [task].
   ///
   /// If no error occurs, then value [T] is returned and
@@ -163,7 +163,7 @@ class ExceptionConverterSuite {
   /// If the given [error] is not an [Exception], then an [ArgumentError] is
   /// thrown.
   ///
-  /// A [messageLog](https://app.gitbook.com/o/mikld3zbZI7rCfCZHPAJ/s/dJNBwjLNKHyatg3gvYXN/packages/codenic-logger)
+  /// A [messageLog](https://arch.codenic.dev/packages/codenic-logger)
   /// can be provided to log the result if the target [ExceptionConverter]
   /// supports it.
   Failure convert({

@@ -23,7 +23,7 @@ Codenic Bloc Use Case provides a suite of abstract use case templates (powered b
 
 This package was inspired by [Reso Coder's TDD Clean Architecture](https://resocoder.com/flutter-clean-architecture-tdd/).
 
-**To know more, visit the [Codenic Bloc Use Case documentation](https://app.gitbook.com/o/mikld3zbZI7rCfCZHPAJ/s/dJNBwjLNKHyatg3gvYXN/packages/codenic-bloc-use-case).**
+**To know more, visit the [Codenic Bloc Use Case documentation](https://arch.codenic.dev/packages/codenic-bloc-use-case).**
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/CodenicCoders/codenic_clean_arch/main/docs/assets/codenic.webp" alt="Codenic" width=320/>

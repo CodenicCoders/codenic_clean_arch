@@ -1,6 +1,6 @@
 name: codenic_logger
 description: A logger extension for providing structured and mutable log messages.
-version: 2.0.0
+version: 2.0.1
 repository: https://github.com/CodenicCoders/codenic_clean_arch/tree/main/packages/codenic_logger
 issue_tracker: https://github.com/CodenicCoders/codenic_clean_arch/issues
 homepage: https://arch.codenic.dev

@@ -24,7 +24,7 @@ A utility tool for converting Exceptions into Failure objects.
 
 By converting exceptions into failure objects, the program can handle exceptions in a more generic way, rather than being tied to the specific details of a particular technology or framework. This can make it easier to write code that is more portable and easier to maintain, as it is not tied to the specifics of any particular technology.
 
-**To know more, visit the [Codenic Exception Converter documentation](https://app.gitbook.com/o/mikld3zbZI7rCfCZHPAJ/s/dJNBwjLNKHyatg3gvYXN/packages/codenic-exception-converter).**
+**To know more, visit the [Codenic Exception Converter documentation](https://arch.codenic.dev/packages/codenic-exception-converter).**
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/CodenicCoders/codenic_clean_arch/main/docs/assets/codenic.webp" alt="Codenic" width=320/>

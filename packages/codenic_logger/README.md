@@ -24,7 +24,7 @@ A logger for producing pretty logs with mutable log message objects.
 
 > This utilizes the [logger](https://pub.dev/packages/logger) package as its main component.
 
-**To know more, visit the [Codenic Logger documentation](https://app.gitbook.com/o/mikld3zbZI7rCfCZHPAJ/s/dJNBwjLNKHyatg3gvYXN/packages/codenic-logger).**
+**To know more, visit the [Codenic Logger documentation](https://arch.codenic.dev/packages/codenic-logger).**
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/CodenicCoders/codenic_clean_arch/main/docs/assets/codenic.webp" alt="Codenic" width=320/>

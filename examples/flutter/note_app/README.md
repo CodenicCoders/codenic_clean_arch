@@ -1,6 +1,6 @@
 # note_app
 
-A simple note-taking app to demonstrate the use of the [Codenic Clean Architecture](https://app.gitbook.com/o/mikld3zbZI7rCfCZHPAJ/s/dJNBwjLNKHyatg3gvYXN/) in Flutter.
+A simple note-taking app to demonstrate the use of the [Codenic Clean Architecture](https://arch.codenic.dev/) in Flutter.
 The app contains the following features:
 - Create, update and delete notes.
 - View all notes in a paginated manner.
