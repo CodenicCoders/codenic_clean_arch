@@ -1,3 +1,6 @@
+## 2.0.3
+- Downgrade `meta` to `1.8.0`
+
 ## 2.0.2
 - Bump dependencies
 
