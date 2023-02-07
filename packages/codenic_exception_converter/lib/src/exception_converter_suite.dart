@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:codenic_exception_converter/codenic_exception_converter.dart';
 import 'package:codenic_exception_converter/src/exception_converters/fallback_exception_converter.dart';
 
@@ -54,18 +56,17 @@ class ExceptionConverterSuite {
   /// The default [ExceptionConverter]s used to convert [Exception]s into
   /// [Failure]s.
   ///
-  /// This is used by [observe], [observeSync], and [convert].
+  /// This is used by [observe] and [convert].
   final List<ExceptionConverterFactory> exceptionConverters;
 
-  /// The default logger used by [observe] and [observeSync].
+  /// The default logger used by [observe].
   final CodenicLogger logger;
 
   List<ExceptionConverter<Exception, Failure, T>> _exceptionConverters<T>() {
     return exceptionConverters.map((e) => e<T>()).toList();
   }
 
-  /// Asynchronously converts any uncaught [Exception] thrown by the [task]
-  /// into a [Failure].
+  /// Converts any uncaught [Exception] thrown by the [task] into a [Failure].
   ///
   /// {@template observe}
   /// A [messageLog](https://arch.codenic.dev/packages/codenic-logger)
@@ -89,7 +90,7 @@ class ExceptionConverterSuite {
   /// See https://groups.google.com/a/dartlang.org/g/misc/c/lx9CXiV3o30/m/s5l_PwpHUGAJ.
   /// {@endtemplate}
   Future<Either<Failure, T>> observe<T>({
-    required Future<Either<Failure, T>> Function(MessageLog? messageLog) task,
+    required FutureOr<Either<Failure, T>> Function(MessageLog? messageLog) task,
     List<ExceptionConverter<Exception, Failure, T>>? exceptionConverters,
     MessageLog? messageLog,
     bool printResult = false,
@@ -98,7 +99,7 @@ class ExceptionConverterSuite {
         _extendedExceptionConverters<T>(exceptionConverters);
 
     return extendedExceptionConverters
-        .fold<Future<Either<Failure, T>> Function(MessageLog? messageLog)>(
+        .fold<FutureOr<Either<Failure, T>> Function(MessageLog? messageLog)>(
       (messageLog) async {
         final result = await task(messageLog);
 
@@ -112,40 +113,6 @@ class ExceptionConverterSuite {
         return result;
       },
       (previousValue, element) => (messageLog) => element.observe(
-            task: previousValue,
-            logger: logger,
-            messageLog: messageLog,
-          ),
-    )(messageLog);
-  }
-
-  /// Synchronously converts any uncaught [Exception] thrown by the [task]
-  /// into a [Failure].
-  ///
-  /// {@macro observeSync}
-  Either<Failure, T> observeSync<T>({
-    required Either<Failure, T> Function(MessageLog? messageLog) task,
-    List<ExceptionConverter<Exception, Failure, T>>? exceptionConverters,
-    MessageLog? messageLog,
-  }) {
-    final extendedExceptionConverters =
-        _extendedExceptionConverters<T>(exceptionConverters);
-
-    return extendedExceptionConverters
-        .fold<Either<Failure, T> Function(MessageLog? messageLog)>(
-      (messageLog) {
-        final result = task(messageLog);
-
-        if (messageLog != null) {
-          result.fold(
-            (l) => logger.warn(messageLog..message),
-            (r) => logger.info(messageLog..message),
-          );
-        }
-
-        return result;
-      },
-      (previousValue, element) => (messageLog) => element.observeSync(
             task: previousValue,
             logger: logger,
             messageLog: messageLog,

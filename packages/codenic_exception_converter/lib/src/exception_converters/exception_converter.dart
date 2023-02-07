@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:codenic_exception_converter/codenic_exception_converter.dart';
 
 /// {@template ExceptionConverter}
 /// An abstract class that converts an exception [E] to failure [F] if exception
-/// [E] occurs while running [observe] or [observeSync].
+/// [E] occurs while running [observe] .
 ///
 /// If no error occurs, then value [R] is returned.
 ///
@@ -21,7 +23,7 @@ abstract class ExceptionConverter<E extends Exception, F extends Failure, R> {
     return type == E;
   }
 
-  /// Executes and observes the asynchronous [task].
+  /// Executes and observes the given [task].
   ///
   /// {@template observe}
   /// If an [Exception] is thrown by the [task], then it will be converted
@@ -31,7 +33,7 @@ abstract class ExceptionConverter<E extends Exception, F extends Failure, R> {
   /// about the exception.
   /// {@endtemplate}
   Future<Either<Failure, R>> observe({
-    required Future<Either<Failure, R>> Function(MessageLog? messageLog) task,
+    required FutureOr<Either<Failure, R>> Function(MessageLog? messageLog) task,
     CodenicLogger? logger,
     MessageLog? messageLog,
   }) async {
@@ -42,33 +44,6 @@ abstract class ExceptionConverter<E extends Exception, F extends Failure, R> {
 
     try {
       return await task(messageLog);
-    } on E catch (exception, stackTrace) {
-      return Left(
-        convert(
-          logger: logger,
-          messageLog: messageLog,
-          exception: exception,
-          stackTrace: stackTrace,
-        ),
-      );
-    }
-  }
-
-  /// Executes and observes the synchronous [task].
-  ///
-  /// {@macro observe}
-  Either<Failure, R> observeSync({
-    required Either<Failure, R> Function(MessageLog? messageLog) task,
-    CodenicLogger? logger,
-    MessageLog? messageLog,
-  }) {
-    assert(
-      messageLog == null || logger != null,
-      'If you want to log the exception, then you must provide a logger.',
-    );
-
-    try {
-      return task(messageLog);
     } on E catch (exception, stackTrace) {
       return Left(
         convert(

@@ -7,23 +7,23 @@ import 'package:codenic_exception_converter/codenic_exception_converter.dart';
 Future<void> main() async {
   // To run, type `dart --enable-asserts example/main.dart`.
 
-  _observeWithDefaultConverters();
+  await _observeWithDefaultConverters();
   print('');
-  _observeWithArgConverters();
+  await _observeWithArgConverters();
   print('');
-  _observeNoExceptionConverters();
+  await _observeNoExceptionConverters();
   print('');
   _convert();
 }
 
-void _observeWithDefaultConverters() {
+Future<void> _observeWithDefaultConverters() async {
   // Create an exception converter suite that can convert a `SocketException`
   // into a `NetworkFailure`
   final exceptionConverterSuite = ExceptionConverterSuite(
     exceptionConverters: [SocketExceptionConverter.new],
   );
 
-  final result = exceptionConverterSuite.observeSync<void>(
+  final result = await exceptionConverterSuite.observe<void>(
     messageLog: MessageLog(id: 'observe-with-default-converters'),
     task: (messageLog) {
       // Simulate exception
@@ -34,10 +34,10 @@ void _observeWithDefaultConverters() {
   print('Observe (with default converters): $result');
 }
 
-void _observeWithArgConverters() {
+Future<void> _observeWithArgConverters() async {
   final exceptionConverterSuite = ExceptionConverterSuite();
 
-  final result = exceptionConverterSuite.observeSync<void>(
+  final result = await exceptionConverterSuite.observe<void>(
     messageLog: MessageLog(id: 'observe-with-argument-converters'),
     // Provide an exception converter as an argument
     exceptionConverters: [const SocketExceptionConverter()],
@@ -50,10 +50,10 @@ void _observeWithArgConverters() {
   print('Observe (with argument exception converters): $result');
 }
 
-void _observeNoExceptionConverters() {
+Future<void> _observeNoExceptionConverters() async {
   final exceptionConverterSuite = ExceptionConverterSuite();
 
-  final result = exceptionConverterSuite.observeSync<void>(
+  final result = await exceptionConverterSuite.observe<void>(
     messageLog: MessageLog(id: 'observe-with-no-exception-converters'),
     task: (messageLog) {
       try {

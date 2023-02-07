@@ -87,64 +87,64 @@ void main() {
           test(
             'should return a `NetworkFailure` when a socket exception is '
             'thrown',
-            () {
-              exceptionConverterSuite
-                  .observeSync<void>(
-                    messageLog: messageLog,
-                    exceptionConverters: [const SocketExceptionConverter()],
-                    task: (messageLog) {
-                      throw const SocketException('test');
-                    },
-                  )
-                  .fold(
-                    (l) => expect(l, isA<SocketFailure>()),
-                    (r) => throw StateError(''),
-                  );
+            () async {
+              final result = await exceptionConverterSuite.observe<void>(
+                messageLog: messageLog,
+                exceptionConverters: [const SocketExceptionConverter()],
+                task: (messageLog) {
+                  throw const SocketException('test');
+                },
+              );
+
+              result.fold(
+                (l) => expect(l, isA<SocketFailure>()),
+                (r) => throw StateError(''),
+              );
             },
           );
 
           test(
             'should return a failure from the default exception converters '
             'when an exception is thrown',
-            () {
+            () async {
               final exceptionConverter = ExceptionConverterSuite(
                 exceptionConverters: [SocketExceptionConverter.new],
               );
 
-              exceptionConverter
-                  .observeSync<void>(
-                    messageLog: messageLog,
-                    task: (messageLog) {
-                      throw const SocketException('test');
-                    },
-                  )
-                  .fold(
-                    (l) => expect(l, isA<SocketFailure>()),
-                    (r) => throw StateError(''),
-                  );
+              final result = await exceptionConverter.observe<void>(
+                messageLog: messageLog,
+                task: (messageLog) {
+                  throw const SocketException('test');
+                },
+              );
+
+              result.fold(
+                (l) => expect(l, isA<SocketFailure>()),
+                (r) => throw StateError(''),
+              );
             },
           );
 
           test(
             'should return a base failure when an exception is thrown without '
             'an exception converter',
-            () {
-              exceptionConverterSuite
-                  .observeSync<void>(
-                    messageLog: messageLog,
-                    task: (messageLog) {
-                      throw const FormatException();
-                    },
-                  )
-                  .fold(
-                    (l) => expect(l, isA<Failure>()),
-                    (r) => throw StateError(''),
-                  );
+            () async {
+              final result = await exceptionConverterSuite.observe<void>(
+                messageLog: messageLog,
+                task: (messageLog) {
+                  throw const FormatException();
+                },
+              );
+
+              result.fold(
+                (l) => expect(l, isA<Failure>()),
+                (r) => throw StateError(''),
+              );
             },
           );
 
-          test('should log a warning when a failure is returned, ', () {
-            exceptionConverterSuite.observeSync<void>(
+          test('should log a warning when a failure is returned, ', () async {
+            await exceptionConverterSuite.observe<void>(
               messageLog: messageLog,
               task: (messageLog) {
                 return const Left(Failure());
@@ -157,8 +157,8 @@ void main() {
             expect(printedStackTrace, isNull);
           });
 
-          test('should log an info on success', () {
-            exceptionConverterSuite.observeSync<void>(
+          test('should log an info on success', () async {
+            await exceptionConverterSuite.observe<void>(
               messageLog: messageLog,
               task: (messageLog) {
                 return const Right(null);
