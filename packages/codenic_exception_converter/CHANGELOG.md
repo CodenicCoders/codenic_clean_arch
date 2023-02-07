@@ -1,3 +1,6 @@
+## 1.0.3
+- Upgrade `codenic_logger` to `2.0.3`
+
 ## 1.0.2
 - Bump dependencies
 - Use `FutureOr` in `ExceptionConverter.observe` and 
