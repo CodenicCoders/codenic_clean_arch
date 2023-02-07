@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:codenic_bloc_use_case/codenic_bloc_use_case.dart';
 import 'package:codenic_exception_converter/codenic_exception_converter.dart';
 import 'package:domain/note/repositories/note_repository.dart';
@@ -31,7 +33,7 @@ class CreateNoteEntry extends Runner<CreateNoteEntryParams, Failure, void> {
   final NoteRepository _noteRepository;
 
   @override
-  Future<Either<Failure, void>> onCall(CreateNoteEntryParams params) =>
+  FutureOr<Either<Failure, void>> onCall(CreateNoteEntryParams params) =>
       _noteRepository.createNoteEntry(
         title: params.title,
         content: params.content,

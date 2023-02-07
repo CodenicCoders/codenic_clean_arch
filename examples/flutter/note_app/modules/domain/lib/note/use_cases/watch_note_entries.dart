@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:codenic_bloc_use_case/codenic_bloc_use_case.dart';
 import 'package:codenic_exception_converter/codenic_exception_converter.dart';
 import 'package:domain/note/entities/note_entry.dart';
@@ -29,7 +31,7 @@ class WatchNoteEntries
   final NoteRepository noteRepository;
 
   @override
-  Future<Either<Failure, VerboseStream<Failure, List<NoteEntry>>>> onCall(
+  FutureOr<Either<Failure, VerboseStream<Failure, List<NoteEntry>>>> onCall(
     WatchNoteEntriesParams params,
   ) =>
       noteRepository.watchNoteEntries(limit: params.limit);

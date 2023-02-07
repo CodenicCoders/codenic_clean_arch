@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:domain/domain.dart';
 import 'package:domain/note/entities/note_entry.dart';
 import 'package:domain/note/failures/note_content_too_long_failure.dart';
@@ -21,9 +23,9 @@ class NoteRepositoryImpl extends NoteRepository {
 
   /// The SQLBrite data source instance for persisting note entries.
   final SqlbriteDataSource _sqlbriteDataSource;
- 
+
   @override
-  Future<Either<Failure, void>> createNoteEntry(
+  FutureOr<Either<Failure, void>> createNoteEntry(
       {String? title, String? content}) {
     return _exceptionConverterSuite.observe(
       messageLog: MessageLog(id: 'create-note-entry')
@@ -48,7 +50,7 @@ class NoteRepositoryImpl extends NoteRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updateNoteEntry(
+  FutureOr<Either<Failure, void>> updateNoteEntry(
       {required String id, String? title, String? content}) {
     assert(title != null || content != null);
 
@@ -68,7 +70,7 @@ class NoteRepositoryImpl extends NoteRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteNoteEntry({required String id}) {
+  FutureOr<Either<Failure, void>> deleteNoteEntry({required String id}) {
     return _exceptionConverterSuite.observe(
       messageLog: MessageLog(id: 'delete-note-entry')..data.addAll({'id': id}),
       task: (messageLog) async {
@@ -79,7 +81,7 @@ class NoteRepositoryImpl extends NoteRepository {
   }
 
   @override
-  Future<Either<Failure, List<NoteEntry>>> fetchNoteEntries(
+  FutureOr<Either<Failure, List<NoteEntry>>> fetchNoteEntries(
       {int? limit, pageToken}) {
     return _exceptionConverterSuite.observe(
       messageLog: MessageLog(id: 'fetch-note-entries')
@@ -96,7 +98,7 @@ class NoteRepositoryImpl extends NoteRepository {
   }
 
   @override
-  Future<Either<Failure, VerboseStream<Failure, List<NoteEntry>>>>
+  FutureOr<Either<Failure, VerboseStream<Failure, List<NoteEntry>>>>
       watchNoteEntries({int? limit}) async {
     return _exceptionConverterSuite.observe(
       messageLog: MessageLog(id: 'watch-note-entries')
@@ -106,8 +108,8 @@ class NoteRepositoryImpl extends NoteRepository {
             .watchRecentNoteEntries(limit: limit ?? 10)
             .map((event) => event.map((e) => e.toEntity()).toList());
 
-        // A `VerboseStream` is a stream wrapper that enables the conversion 
-        // of an error into another object (in our case, a `Failure` object) 
+        // A `VerboseStream` is a stream wrapper that enables the conversion
+        // of an error into another object (in our case, a `Failure` object)
         // before it is emitted.
         return Right(
           VerboseStream(

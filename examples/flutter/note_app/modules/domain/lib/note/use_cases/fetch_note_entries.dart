@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:codenic_bloc_use_case/codenic_bloc_use_case.dart';
 import 'package:codenic_exception_converter/codenic_exception_converter.dart';
 import 'package:domain/note/entities/note_entry.dart';
@@ -33,7 +35,7 @@ class FetchNoteEntries
   final NoteRepository _noteRepository;
 
   @override
-  Future<Either<Failure, List<NoteEntry>>> onCall(
+  FutureOr<Either<Failure, List<NoteEntry>>> onCall(
           FetchNoteEntriesParams params) =>
       _noteRepository.fetchNoteEntries(
         limit: params.limit,

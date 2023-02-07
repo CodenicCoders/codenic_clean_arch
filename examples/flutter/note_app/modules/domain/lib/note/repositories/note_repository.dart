@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:codenic_bloc_use_case/codenic_bloc_use_case.dart';
 import 'package:codenic_exception_converter/codenic_exception_converter.dart';
 import 'package:domain/note/entities/note_entry.dart';
@@ -16,7 +18,7 @@ abstract class NoteRepository {
   /// A [Failure] may be thrown:
   /// - [NoteContentTooLongFailure]
   /// - [NoteTitleTooLongFailure]
-  Future<Either<Failure, void>> createNoteEntry({
+  FutureOr<Either<Failure, void>> createNoteEntry({
     String? title,
     String? content,
   });
@@ -26,20 +28,20 @@ abstract class NoteRepository {
   /// A [Failure] may be thrown:
   /// - [NoteContentTooLongFailure]
   /// - [NoteTitleTooLongFailure]
-  Future<Either<Failure, void>> updateNoteEntry({
+  FutureOr<Either<Failure, void>> updateNoteEntry({
     required String id,
     String? title,
     String? content,
   });
 
   /// Deletes an existing [NoteEntry] with the given [id].
-  Future<Either<Failure, void>> deleteNoteEntry({required String id});
+  FutureOr<Either<Failure, void>> deleteNoteEntry({required String id});
 
   /// Fetches a collection of [NoteEntry]s.
   ///
   /// The [limit] parameter can be used to limit the number of entries.
   /// The [pageToken] parameter can be used to fetch a specific page of entries.
-  Future<Either<Failure, List<NoteEntry>>> fetchNoteEntries({
+  FutureOr<Either<Failure, List<NoteEntry>>> fetchNoteEntries({
     int? limit,
     dynamic pageToken,
   });
@@ -51,6 +53,6 @@ abstract class NoteRepository {
   /// A [VerboseStream] is a [Stream] wrapper which gives it an error
   /// handler for converting [Exception]s into [Failure]s before it gets
   /// emitted
-  Future<Either<Failure, VerboseStream<Failure, List<NoteEntry>>>>
+  FutureOr<Either<Failure, VerboseStream<Failure, List<NoteEntry>>>>
       watchNoteEntries({int? limit});
 }
