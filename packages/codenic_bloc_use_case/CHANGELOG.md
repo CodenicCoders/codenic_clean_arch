@@ -1,3 +1,7 @@
+
+## 3.0.3
+- Downgrade `meta` dependency to `1.8.0`
+
 ## 3.0.2
 - Bump dependencies
 - Use `FutureOr` on `BaseUseCase.onCall`
