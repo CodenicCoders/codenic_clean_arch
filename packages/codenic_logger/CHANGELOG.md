@@ -1,3 +1,6 @@
+## 2.0.2
+- Bump dependencies
+
 ## 2.0.1
 - Update documentation link in README.md
 
