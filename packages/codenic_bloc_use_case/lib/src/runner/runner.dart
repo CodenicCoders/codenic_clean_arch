@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:codenic_bloc_use_case/src/base.dart';
 import 'package:codenic_bloc_use_case/src/util/ensure_async.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:meta/meta.dart';
 
 part 'runner_state.dart';
 
@@ -46,11 +47,6 @@ abstract class Runner<P, L, R> extends DistinctCubit<RunnerState>
   /// {@endtemplate}
   @override
   R? get rightValue => super.rightValue;
-
-  /// The use case action callback called on [run].
-  @protected
-  @override
-  Future<Either<L, R>> onCall(P params);
 
   /// Executes the [onCall] use case action.
   ///

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:meta/meta.dart';
@@ -74,7 +76,7 @@ abstract class BaseUseCase<P, L, R> {
 
   /// The use case action callback.
   @protected
-  Future<Either<L, R>> onCall(P params);
+  FutureOr<Either<L, R>> onCall(P params);
 
   /// Sets the [params] and [value] of the use case.
   @protected
