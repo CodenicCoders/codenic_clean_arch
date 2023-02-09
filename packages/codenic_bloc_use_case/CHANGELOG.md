@@ -1,3 +1,6 @@
+## 3.0.4
+- Bump dependencies
+- Use `FutureOr` in sample
 
 ## 3.0.3
 - Downgrade `meta` dependency to `1.8.0`

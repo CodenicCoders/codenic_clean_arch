@@ -24,9 +24,7 @@ Future<void> main() async {
   Bloc.observer = SimpleBlocObserver();
 
   print(
-    'Enter [0] for Runner, '
-    '[1] for Watcher, '
-    '[2] for Paginator: ',
+    'Enter [0] for Runner, [1] for Watcher: ',
   );
 
   final input = stdin.readLineSync(encoding: utf8);

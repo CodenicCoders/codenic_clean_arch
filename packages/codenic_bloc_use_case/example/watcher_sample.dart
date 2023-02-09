@@ -128,7 +128,7 @@ class WatchFruitBasket
 
   /// A callback function triggered when the [watch] method is called.
   @override
-  Future<Either<Failure, VerboseStream<Failure, FruitBasket>>> onCall(
+  FutureOr<Either<Failure, VerboseStream<Failure, FruitBasket>>> onCall(
     WatchFruitBasketParams params,
   ) async {
     if (params.maxCapacity < 1) {

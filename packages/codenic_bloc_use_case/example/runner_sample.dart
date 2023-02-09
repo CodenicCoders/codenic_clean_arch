@@ -81,7 +81,7 @@ void printRunResults(
 class CountFruit extends Runner<CountFruitParams, Failure, CountFruitResult> {
   /// A callback function triggered when the [run] method is called.
   @override
-  Future<Either<Failure, CountFruitResult>> onCall(
+  FutureOr<Either<Failure, CountFruitResult>> onCall(
     CountFruitParams params,
   ) async {
     if (params.fruits.isEmpty) {

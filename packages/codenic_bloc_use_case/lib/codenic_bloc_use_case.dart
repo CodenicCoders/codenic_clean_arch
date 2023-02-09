@@ -1,5 +1,3 @@
-library codenic_bloc_use_case;
-
 export 'package:bloc/bloc.dart';
 export 'package:codenic_bloc_use_case/src/base.dart';
 export 'package:codenic_bloc_use_case/src/runner/runner.dart';
