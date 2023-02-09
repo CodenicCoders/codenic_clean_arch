@@ -90,11 +90,11 @@ class NetworkFailure extends Failure {
 ///
 /// If no exception is caught, then [T] is returned.
 class SocketExceptionConverter<T>
-    extends ExceptionConverter<SocketException, NetworkFailure, T> {
+    extends ExceptionConverter<SocketException, T> {
   const SocketExceptionConverter();
 
   @override
-  NetworkFailure convert({
+  Failure convert({
     required SocketException exception,
     StackTrace? stackTrace,
     CodenicLogger? logger,

@@ -4,7 +4,7 @@ import 'package:codenic_exception_converter/codenic_exception_converter.dart';
 import 'package:codenic_exception_converter/src/exception_converters/fallback_exception_converter.dart';
 
 /// A signature for [ExceptionConverter] factories.
-typedef ExceptionConverterFactory = ExceptionConverter<Exception, Failure, T>
+typedef ExceptionConverterFactory = ExceptionConverter<Exception, T>
     Function<T>();
 
 /// {@template ExceptionConverter}
@@ -62,7 +62,7 @@ class ExceptionConverterSuite {
   /// The default logger used by [observe].
   final CodenicLogger logger;
 
-  List<ExceptionConverter<Exception, Failure, T>> _exceptionConverters<T>() {
+  List<ExceptionConverter<Exception, T>> _exceptionConverters<T>() {
     return exceptionConverters.map((e) => e<T>()).toList();
   }
 
@@ -91,7 +91,7 @@ class ExceptionConverterSuite {
   /// {@endtemplate}
   Future<Either<Failure, T>> observe<T>({
     required FutureOr<Either<Failure, T>> Function(MessageLog? messageLog) task,
-    List<ExceptionConverter<Exception, Failure, T>>? exceptionConverters,
+    List<ExceptionConverter<Exception, T>>? exceptionConverters,
     MessageLog? messageLog,
     bool printResult = false,
   }) async {
@@ -136,7 +136,7 @@ class ExceptionConverterSuite {
   Failure convert({
     required Object error,
     StackTrace? stackTrace,
-    List<ExceptionConverter<Exception, Failure, void>>? exceptionConverters,
+    List<ExceptionConverter<Exception, void>>? exceptionConverters,
     MessageLog? messageLog,
   }) {
     if (error is Error) {
@@ -174,13 +174,12 @@ class ExceptionConverterSuite {
     // coverage:ignore-end
   }
 
-  List<ExceptionConverter<Exception, Failure, T>>
-      _extendedExceptionConverters<T>(
-    List<ExceptionConverter<Exception, Failure, T>>? exceptionConverters,
+  List<ExceptionConverter<Exception, T>> _extendedExceptionConverters<T>(
+    List<ExceptionConverter<Exception, T>>? exceptionConverters,
   ) =>
-          [
-            ...?exceptionConverters,
-            ..._exceptionConverters<T>(),
-            FallbackExceptionConverter<T>(),
-          ];
+      [
+        ...?exceptionConverters,
+        ..._exceptionConverters<T>(),
+        FallbackExceptionConverter<T>(),
+      ];
 }

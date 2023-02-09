@@ -3,17 +3,17 @@ import 'dart:async';
 import 'package:codenic_exception_converter/codenic_exception_converter.dart';
 
 /// {@template ExceptionConverter}
-/// An abstract class that converts an exception [E] to failure [F] if exception
+/// An abstract class that converts an exception [E] to a [Failure] if exception
 /// [E] occurs while running [observe] .
 ///
-/// If no error occurs, then value [R] is returned.
+/// If no error occurs, then value [T] is returned.
 ///
 /// While a single [ExceptionConverter] may not be very useful on its own, you
 /// can use a group of exception converters together in an
 /// [ExceptionConverterSuite] to run a task and automatically convert any
 /// exceptions that are thrown into the appropriate [Failure] object.
 /// {@endtemplate}
-abstract class ExceptionConverter<E extends Exception, F extends Failure, R> {
+abstract class ExceptionConverter<E extends Exception, T> {
   /// {@macro ExceptionConverter}
   const ExceptionConverter();
 
@@ -27,13 +27,13 @@ abstract class ExceptionConverter<E extends Exception, F extends Failure, R> {
   ///
   /// {@template observe}
   /// If an [Exception] is thrown by the [task], then it will be converted
-  /// into a [Failure] [F]. Otherwise, [R] will be returned.
+  /// into a [Failure]. Otherwise, [T] will be returned.
   ///
   /// The [logger] and [messageLog] is used to log and give more details
   /// about the exception.
   /// {@endtemplate}
-  Future<Either<Failure, R>> observe({
-    required FutureOr<Either<Failure, R>> Function(MessageLog? messageLog) task,
+  Future<Either<Failure, T>> observe({
+    required FutureOr<Either<Failure, T>> Function(MessageLog? messageLog) task,
     CodenicLogger? logger,
     MessageLog? messageLog,
   }) async {
@@ -56,11 +56,11 @@ abstract class ExceptionConverter<E extends Exception, F extends Failure, R> {
     }
   }
 
-  /// Converts the [Exception] [E] to a [Failure] [F].
+  /// Converts the [Exception] [E] to a [Failure].
   ///
   /// The [logger] and [messageLog] is used to log and give more details
   /// about the exception.
-  F convert({
+  Failure convert({
     required E exception,
     StackTrace? stackTrace,
     CodenicLogger? logger,

@@ -11,11 +11,11 @@ class SocketFailure extends Failure {
 }
 
 class SocketExceptionConverter<T>
-    extends ExceptionConverter<SocketException, SocketFailure, T> {
+    extends ExceptionConverter<SocketException, T> {
   const SocketExceptionConverter();
 
   @override
-  SocketFailure convert({
+  Failure convert({
     required SocketException exception,
     StackTrace? stackTrace,
     CodenicLogger? logger,

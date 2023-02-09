@@ -7,8 +7,7 @@ import 'package:codenic_logger/codenic_logger.dart';
 ///
 /// If no error occurs, then value [T] is returned.
 /// {@endtemplate}
-class FallbackExceptionConverter<T>
-    extends ExceptionConverter<Exception, Failure, T> {
+class FallbackExceptionConverter<T> extends ExceptionConverter<Exception, T> {
   /// {@macro FallbackExceptionConverter}
   const FallbackExceptionConverter();
 

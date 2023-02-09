@@ -1,3 +1,6 @@
+## 2.0.0
+- Remove `Failure` generic type in `ExceptionConverter`
+
 ## 1.0.3
 - Upgrade `codenic_logger` to `2.0.3`
 
