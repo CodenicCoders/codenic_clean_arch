@@ -12,8 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  codenic_bloc_use_case: ^3.0.3
-  codenic_exception_converter: ^1.0.3
+  codenic_bloc_use_case: ^3.0.4
+  codenic_exception_converter: ^2.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.1
