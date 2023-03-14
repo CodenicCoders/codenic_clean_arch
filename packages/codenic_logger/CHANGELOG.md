@@ -1,3 +1,6 @@
+## 2.0.4
+- Upload `logger` to `1.3.0`
+
 ## 2.0.3
 - Downgrade `meta` to `1.8.0`
 

@@ -23,7 +23,7 @@ void main() {
                 data: <String, dynamic>{'aliquam': 'arcu'},
               );
 
-              final logEvent = LogEvent(Level.info, messageLog, null, null);
+              final logEvent = LogEvent(Level.info, messageLog);
 
               final errorLogEvent = LogEvent(
                 Level.error,

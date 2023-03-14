@@ -84,10 +84,10 @@ class MessageLogPrinter extends PrettyPrinter {
   /// As a workaround, a non-nullable [_startTime] has been created to
   /// alleviate the issue.
   @override
-  String getTime() {
+  String getTime(DateTime time) {
     String padNumber(int num, int width) => num.toString().padLeft(width, '0');
 
-    final now = DateTime.now();
+    final now = time;
     final h = padNumber(now.hour, 2);
     final min = padNumber(now.minute, 2);
     final sec = padNumber(now.second, 2);
@@ -112,7 +112,7 @@ class MessageLogPrinter extends PrettyPrinter {
     return _formatAndPrint(
       event.level,
       event.message as MessageLog,
-      printTime ? getTime() : null,
+      printTime ? getTime(event.time) : null,
       event.error?.toString(),
       stackTraceFormatted,
     );
