@@ -93,7 +93,6 @@ class ExceptionConverterSuite {
     required FutureOr<Either<Failure, T>> Function(MessageLog? messageLog) task,
     List<ExceptionConverter<Exception, T>>? exceptionConverters,
     MessageLog? messageLog,
-    bool printResult = false,
   }) async {
     final extendedExceptionConverters =
         _extendedExceptionConverters<T>(exceptionConverters);

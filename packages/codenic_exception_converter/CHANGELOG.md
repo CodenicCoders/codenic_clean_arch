@@ -1,3 +1,6 @@
+## 2.0.1
+- Remove unused `printResult` in `ExceptionConverterSuite`
+
 ## 2.0.0
 - Remove `Failure` generic type in `ExceptionConverter`
 
