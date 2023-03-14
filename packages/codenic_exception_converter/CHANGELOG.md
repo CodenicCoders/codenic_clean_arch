@@ -1,3 +1,5 @@
+## 2.0.2
+- Upgrade `codenic_logger` to `2.0.4`
 ## 2.0.1
 - Remove unused `printResult` in `ExceptionConverterSuite`
 
