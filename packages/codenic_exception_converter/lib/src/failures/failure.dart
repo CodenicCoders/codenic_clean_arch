@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 /// {@endtemplate}
 class Failure with EquatableMixin {
   /// {@macro Failure}
-  const Failure({this.message = "Something went error. We're working on it"});
+  const Failure({this.message = "Something went wrong. We're working on it"});
 
   /// A user-facing message designed to give details about an error to the user.
   final String message;
