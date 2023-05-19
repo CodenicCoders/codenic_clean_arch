@@ -5,7 +5,7 @@ part of 'runner.dart';
 /// The root class of all states emitted by [Runner].
 ///
 /// {@endtemplate}
-abstract class RunnerState with EquatableMixin {
+sealed class RunnerState with EquatableMixin {
   /// {@macro RunnerState}
   const RunnerState(this.runToken);
 
@@ -27,7 +27,7 @@ abstract class RunnerState with EquatableMixin {
 /// been called yet or has been reset.
 ///
 /// {@endtemplate}
-class RunnerInitial extends RunnerState {
+final class RunnerInitial extends RunnerState {
   /// {@macro RunnerInitial}
   const RunnerInitial(super.runToken);
 }
@@ -37,7 +37,7 @@ class RunnerInitial extends RunnerState {
 /// The initial state emitted when [Runner.run] is called.
 ///
 /// {@endtemplate}
-class Running extends RunnerState {
+final class Running extends RunnerState {
   /// {@macro Running}
   const Running(super.runToken);
 }
@@ -47,7 +47,7 @@ class Running extends RunnerState {
 /// The state emitted when [Runner.run] call fails.
 ///
 /// {@endtemplate}
-class RunFailed<L> extends RunnerState {
+final class RunFailed<L> extends RunnerState {
   /// {@macro RunFailed}
   const RunFailed(this.leftValue, int runToken) : super(runToken);
 
@@ -63,7 +63,7 @@ class RunFailed<L> extends RunnerState {
 /// The state emitted when a [Runner.run] call succeeds.
 ///
 /// {@endtemplate}
-class RunSuccess<R> extends RunnerState {
+final class RunSuccess<R> extends RunnerState {
   /// {@macro RunSuccess}
   const RunSuccess(this.rightValue, int runToken) : super(runToken);
 

@@ -14,7 +14,7 @@ part 'runner_state.dart';
 /// success value.
 ///
 /// {@endtemplate}
-abstract class Runner<P, L, R> extends DistinctCubit<RunnerState>
+abstract base class Runner<P, L, R> extends DistinctCubit<RunnerState>
     with BaseUseCase<P, L, R> {
   /// {@macro Runner}
   Runner() : super(const RunnerInitial(DistinctCubit.initialActionToken));

@@ -32,9 +32,7 @@ Future<void> main() async {
   switch (input) {
     case '0':
       await runner();
-      break;
     case '1':
       await watcher();
-      break;
   }
 }

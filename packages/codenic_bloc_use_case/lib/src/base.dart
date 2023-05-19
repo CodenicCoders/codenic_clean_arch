@@ -7,7 +7,7 @@ import 'package:meta/meta.dart';
 /// An abstract class for the core functionalities of a use case.
 ///
 /// A use case represents a specific action within a system.
-abstract class BaseUseCase<P, L, R> {
+abstract base mixin class BaseUseCase<P, L, R> {
   /// {@template BaseUseCase.value}
   ///
   /// The last [L] or [R] value produced by the use case which can either
@@ -118,7 +118,7 @@ abstract class BaseUseCase<P, L, R> {
 /// new method call states.
 ///
 /// {@endtemplate}
-abstract class DistinctCubit<S> extends Cubit<S> {
+abstract base class DistinctCubit<S> extends Cubit<S> {
   /// {@macro DistinctCubit}
   DistinctCubit(super.initialState);
 

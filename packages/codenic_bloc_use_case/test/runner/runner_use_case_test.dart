@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 ///
 /// A use case that returns the next even number from the given even number
 /// argument.
-class TestNextEvenNumber extends Runner<int, String, int> {
+final class TestNextEvenNumber extends Runner<int, String, int> {
   @override
   Future<Either<String, int>> onCall(int params) async {
     await ensureAsync();

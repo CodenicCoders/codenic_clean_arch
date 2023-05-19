@@ -115,7 +115,7 @@ void printWatchResults(
 }
 
 /// A watcher for streaming fruits that goes inside the fruit basket.
-class WatchFruitBasket
+final class WatchFruitBasket
     extends Watcher<WatchFruitBasketParams, Failure, FruitBasket> {
   /// The stream controller for the fruit basket.
   StreamController<FruitBasket>? streamController;
@@ -183,7 +183,7 @@ class WatchFruitBasket
 
 /// The parameter for the [WatchFruitBasket] use case to specify the max
 /// capacity allowed in the fruit basket.
-class WatchFruitBasketParams {
+final class WatchFruitBasketParams {
   const WatchFruitBasketParams({required this.maxCapacity});
 
   /// The max number of fruits allowed in the fruit basket.
@@ -197,7 +197,7 @@ class WatchFruitBasketParams {
 
 /// The right value for the [FruitBasket] use case representing the fruit
 /// basket.
-class FruitBasket {
+final class FruitBasket {
   const FruitBasket(this.fruits);
 
   /// The fruits in the basket.

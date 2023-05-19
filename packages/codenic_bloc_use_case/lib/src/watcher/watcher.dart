@@ -21,7 +21,7 @@ part 'watcher_state.dart';
 /// The created stream emits either an [L] error event or an [R] data event.
 ///
 /// {@endtemplate}
-abstract class Watcher<P, L, R> extends DistinctCubit<WatcherState>
+abstract base class Watcher<P, L, R> extends DistinctCubit<WatcherState>
     with BaseUseCase<P, L, VerboseStream<L, R>> {
   /// {@macro Watcher}
   Watcher() : super(const WatcherInitial(DistinctCubit.initialActionToken));

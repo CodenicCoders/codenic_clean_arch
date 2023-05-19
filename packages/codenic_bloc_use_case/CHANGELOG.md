@@ -1,3 +1,6 @@
+## 4.0.0
+- Migrate to Dart 3
+
 ## 3.0.4
 - Bump dependencies
 - Use `FutureOr` in sample

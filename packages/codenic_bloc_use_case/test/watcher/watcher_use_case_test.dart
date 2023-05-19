@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 ///
 /// A stream use case that emits succeeding even numbers respective to
 /// the given incrementor value.
-class TestWatchEvenNumbers extends Watcher<int, String, int> {
+final class TestWatchEvenNumbers extends Watcher<int, String, int> {
   int _currentValue = 0;
   int _incrementor = 0;
 

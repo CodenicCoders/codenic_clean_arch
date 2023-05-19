@@ -5,7 +5,7 @@ part of 'watcher.dart';
 /// The root class of all states emitted by [Watcher].
 ///
 /// {@endtemplate}
-abstract class WatcherState with EquatableMixin {
+sealed class WatcherState with EquatableMixin {
   /// {@macro WatcherState}
   const WatcherState(this.watchToken);
 
@@ -27,7 +27,7 @@ abstract class WatcherState with EquatableMixin {
 /// not been called yet or has been reset.
 ///
 /// {@endtemplate}
-class WatcherInitial extends WatcherState {
+final class WatcherInitial extends WatcherState {
   /// {@macro WatcherInitial}
   const WatcherInitial(super.watchToken);
 }
@@ -37,7 +37,7 @@ class WatcherInitial extends WatcherState {
 /// The initial state emitted when [Watcher.watch] is called.
 ///
 /// {@endtemplate}
-class StartWatching extends WatcherState {
+final class StartWatching extends WatcherState {
   /// {@macro StartWatching}
   const StartWatching(super.watchToken);
 }
@@ -47,7 +47,7 @@ class StartWatching extends WatcherState {
 /// The state emitted when [Watcher.watch] call fails.
 ///
 /// {@endtemplate}
-class StartWatchFailed<L> extends WatcherState {
+final class StartWatchFailed<L> extends WatcherState {
   /// {@macro StartWatchFailed}
   const StartWatchFailed(this.leftValue, int watchToken) : super(watchToken);
 
@@ -63,7 +63,7 @@ class StartWatchFailed<L> extends WatcherState {
 /// The state emitted when a [Watcher.watch] call succeeds.
 ///
 /// {@endtemplate}
-class StartWatchSuccess<R extends VerboseStream<dynamic, dynamic>>
+final class StartWatchSuccess<R extends VerboseStream<dynamic, dynamic>>
     extends WatcherState {
   /// {@macro StartWatchSuccess}
   const StartWatchSuccess(this.rightValue, int watchToken) : super(watchToken);
@@ -81,7 +81,7 @@ class StartWatchSuccess<R extends VerboseStream<dynamic, dynamic>>
 /// error event.
 ///
 /// {@endtemplate}
-class WatchErrorReceived<LE> extends WatcherState {
+final class WatchErrorReceived<LE> extends WatcherState {
   /// {@macro WatchErrorReceived}
   const WatchErrorReceived(this.leftEvent, int watchToken) : super(watchToken);
 
@@ -98,7 +98,7 @@ class WatchErrorReceived<LE> extends WatcherState {
 /// data event.
 ///
 /// {@endtemplate}
-class WatchDataReceived<RE> extends WatcherState {
+final class WatchDataReceived<RE> extends WatcherState {
   /// {@macro WatchDataReceived}
   const WatchDataReceived(this.rightEvent, int watchToken) : super(watchToken);
 
@@ -114,7 +114,7 @@ class WatchDataReceived<RE> extends WatcherState {
 /// The state emitted when the [Watcher.watch]-created stream closes.
 ///
 /// {@endtemplate}
-class WatchDone extends WatcherState {
+final class WatchDone extends WatcherState {
   /// {@macro WatchDone}
   const WatchDone(super.watchToken);
 }

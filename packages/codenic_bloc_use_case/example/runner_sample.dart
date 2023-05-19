@@ -55,6 +55,7 @@ void printRunResults(
   // The latest value returned when calling `run()`. This may either be the
   // `leftValue` if `RunFailed` was recently emitted. Otherwise, this
   // will be equal to the `rightValue` if `RunSuccess` was more recent
+
   print('Current value: ${runner.value}');
 
   // The recent params passed when calling `run()`. This may either be the
@@ -78,7 +79,8 @@ void printRunResults(
 }
 
 /// A runner that counts the quantity of each given fruit.
-class CountFruit extends Runner<CountFruitParams, Failure, CountFruitResult> {
+final class CountFruit
+    extends Runner<CountFruitParams, Failure, CountFruitResult> {
   /// A callback function triggered when the [run] method is called.
   @override
   FutureOr<Either<Failure, CountFruitResult>> onCall(
@@ -103,7 +105,7 @@ class CountFruit extends Runner<CountFruitParams, Failure, CountFruitResult> {
 
 /// A parameter for the [CountFruit] use case containing all the available
 /// fruits to count.
-class CountFruitParams {
+final class CountFruitParams {
   const CountFruitParams(this.fruits);
 
   /// The fruits in our fruit basket.
@@ -117,7 +119,7 @@ class CountFruitParams {
 }
 
 /// The right value for [CountFruit] containing the count for each fruit.
-class CountFruitResult {
+final class CountFruitResult {
   const CountFruitResult(this.fruitCount);
 
   /// The fruits counted by type
