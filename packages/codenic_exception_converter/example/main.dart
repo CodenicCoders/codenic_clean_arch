@@ -89,7 +89,7 @@ class NetworkFailure extends Failure {
 /// [NetworkFailure] if an error occurs.
 ///
 /// If no exception is caught, then [T] is returned.
-class SocketExceptionConverter<T>
+final class SocketExceptionConverter<T>
     extends ExceptionConverter<SocketException, T> {
   const SocketExceptionConverter();
 

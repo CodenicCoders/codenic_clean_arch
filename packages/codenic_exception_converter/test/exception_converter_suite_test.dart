@@ -10,7 +10,7 @@ class SocketFailure extends Failure {
   const SocketFailure({super.message = 'Socket failure occurred'});
 }
 
-class SocketExceptionConverter<T>
+final class SocketExceptionConverter<T>
     extends ExceptionConverter<SocketException, T> {
   const SocketExceptionConverter();
 

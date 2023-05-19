@@ -1,3 +1,6 @@
+## 3.0.0
+- Migrate to Dart 3
+
 ## 2.0.3
 - Update default `Failure` message
 

@@ -13,7 +13,7 @@ import 'package:codenic_exception_converter/codenic_exception_converter.dart';
 /// [ExceptionConverterSuite] to run a task and automatically convert any
 /// exceptions that are thrown into the appropriate [Failure] object.
 /// {@endtemplate}
-abstract class ExceptionConverter<E extends Exception, T> {
+abstract base class ExceptionConverter<E extends Exception, T> {
   /// {@macro ExceptionConverter}
   const ExceptionConverter();
 
