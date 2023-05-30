@@ -1,3 +1,7 @@
+## 3.1.0
+- BUGFIX: `ExceptionConverter.exceptionEquals` now correctly compares
+`Exception` instances
+
 ## 3.0.0
 - Migrate to Dart 3
 

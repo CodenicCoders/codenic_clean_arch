@@ -156,7 +156,7 @@ class ExceptionConverterSuite {
         _extendedExceptionConverters<void>(exceptionConverters);
 
     for (final exceptionConverter in extendedExceptionConverters) {
-      if (exceptionConverter.exceptionEquals(error.runtimeType)) {
+      if (exceptionConverter.exceptionEquals(error)) {
         return exceptionConverter.convert(
           exception: error,
           messageLog: messageLog,

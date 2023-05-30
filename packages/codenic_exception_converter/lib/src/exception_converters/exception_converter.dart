@@ -17,10 +17,10 @@ abstract base class ExceptionConverter<E extends Exception, T> {
   /// {@macro ExceptionConverter}
   const ExceptionConverter();
 
-  /// Returns `true` if the [type] is the same as [E]. Otherwise, `false` is
-  /// returned.
-  bool exceptionEquals(Type type) {
-    return type == E;
+  /// Returns `true` if the [exception] is the same as [E]. Otherwise, `false`
+  /// is returned.
+  bool exceptionEquals(Exception exception) {
+    return exception is E;
   }
 
   /// Executes and observes the given [task].

@@ -1,6 +1,6 @@
 name: codenic_exception_converter
 description: A utility tool for converting Exception into Failure objects to make your code more portable and easier to maintain.
-version: 3.0.0
+version: 3.1.0
 repository: https://github.com/CodenicCoders/codenic_clean_arch/tree/main/packages/codenic_exception_converter
 issue_tracker: https://github.com/CodenicCoders/codenic_clean_arch/issues
 homepage: https://arch.codenic.dev
