@@ -6,14 +6,60 @@ void main() {
     'Either extension',
     () {
       group(
-        'get right or null',
+        'right',
+        () {
+          test(
+            'should throw an error when right is unavailable',
+            () {
+              final either = Either<String, int>.left('lorep');
+
+              expect(either.right, throwsA(isA<StateError>()));
+            },
+          );
+
+          test(
+            'should return value when right is available',
+            () {
+              final either = Either<String, int>.right(1);
+
+              expect(either.right(), 1);
+            },
+          );
+        },
+      );
+
+      group(
+        'left',
+        () {
+          test(
+            'should throw an error when left is unavailable',
+            () {
+              final either = Either<String, int>.right(1);
+
+              expect(either.left, throwsA(isA<StateError>()));
+            },
+          );
+
+          test(
+            'should return value when left is available',
+            () {
+              final either = Either<String, int>.left('lorep');
+
+              expect(either.left(), 'lorep');
+            },
+          );
+        },
+      );
+
+      group(
+        'right or null',
         () {
           test(
             'should return null when left is available',
             () {
               final either = Either<String, int>.left('lorep');
 
-              expect(either.getRightOrNull(), isNull);
+              expect(either.rightOrNull(), isNull);
             },
           );
 
@@ -22,21 +68,21 @@ void main() {
             () {
               final either = Either<String, int>.right(1);
 
-              expect(either.getRightOrNull(), 1);
+              expect(either.rightOrNull(), 1);
             },
           );
         },
       );
 
       group(
-        'get left or null',
+        'left or null',
         () {
           test(
             'should return null when right is available',
             () {
               final either = Either<String, int>.right(1);
 
-              expect(either.getLeftOrNull(), isNull);
+              expect(either.leftOrNull(), isNull);
             },
           );
 
@@ -45,7 +91,7 @@ void main() {
             () {
               final either = Either<String, int>.left('lorep');
 
-              expect(either.getLeftOrNull(), 'lorep');
+              expect(either.leftOrNull(), 'lorep');
             },
           );
         },

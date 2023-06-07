@@ -1,3 +1,8 @@
+## 5.0.0
+- Add `Either` extension methods: `left`, right`, `leftOrNull` and `rightOrNull`
+- Replace `getLeftOrNull` with `leftOrNull`
+- Replace `getRightOrNull` with `rightOrNull`
+
 ## 4.0.0
 - Migrate to Dart 3
 
