@@ -1,3 +1,6 @@
+## 3.1.1
+- Bump dependencies
+
 ## 3.1.0
 - BUGFIX: `ExceptionConverter.exceptionEquals` now correctly compares
 `Exception` instances
