@@ -42,7 +42,18 @@ class MessageLogPrinter extends PrettyPrinter {
     super.excludeBox,
     super.noBoxingByDefault,
     List<RegExp>? stackTraceBlocklist,
-  }) : stackTraceBlocklist = stackTraceBlocklist ?? [];
+  }) : stackTraceBlocklist = stackTraceBlocklist ?? [] {
+    // Translate excludeBox map (constant if default) to includeBox map with
+    // all Level enum possibilities
+    _includeBox = {
+      ...Map.fromEntries(
+        Level.values.map((level) => MapEntry(level, !noBoxingByDefault)),
+      ),
+      ...Map.fromEntries(
+        excludeBox.entries.map((entry) => MapEntry(entry.key, !entry.value)),
+      ),
+    };
+  }
 
   /// A collection of regex for excluding stack trace lines from being shown
   /// in the output.
@@ -76,6 +87,12 @@ class MessageLogPrinter extends PrettyPrinter {
   static final _browserStackTraceRegex =
       RegExp(r'^(?:package:)?(dart:[^\s]+|[^\s]+)');
 
+  /// Contains the parsed rules resulting from [excludeBox] and
+  /// [noBoxingByDefault].
+  ///
+  /// See [PrettyPrinter] `_includeBox` private variable for more information.
+  late final Map<Level, bool> _includeBox;
+
   /// A replacement for [PrettyPrinter.getTime].
   ///
   /// The [PrettyPrinter.getTime] throws an [Exception] whenever it is
@@ -101,10 +118,10 @@ class MessageLogPrinter extends PrettyPrinter {
     String? stackTraceFormatted;
 
     if (event.stackTrace == null) {
-      if (methodCount > 0) {
+      if (methodCount == null || methodCount! > 0) {
         stackTraceFormatted = formatStackTrace(StackTrace.current, methodCount);
       }
-    } else if (errorMethodCount > 0) {
+    } else if (errorMethodCount == null || errorMethodCount! > 0) {
       stackTraceFormatted =
           formatStackTrace(event.stackTrace, errorMethodCount);
     }
@@ -119,26 +136,31 @@ class MessageLogPrinter extends PrettyPrinter {
   }
 
   @override
-  String? formatStackTrace(StackTrace? stackTrace, int methodCount) {
-    var lines = stackTrace.toString().split('\n');
-    if (stackTraceBeginIndex > 0 && stackTraceBeginIndex < lines.length - 1) {
-      lines = lines.sublist(stackTraceBeginIndex);
-    }
+  String? formatStackTrace(StackTrace? stackTrace, int? methodCount) {
+    final lines = stackTrace
+        .toString()
+        .split('\n')
+        .where(
+          (line) =>
+              !_discardBlocklistedStackTraceLine(line) &&
+              !_discardDeviceStackTraceLine(line) &&
+              !_discardWebStacktraceLine(line) &&
+              !_discardBrowserStacktraceLine(line) &&
+              line.isNotEmpty,
+        )
+        .toList();
 
     final formatted = <String>[];
-    var count = 0;
-    for (final line in lines) {
-      if (_discardBlocklistedStackTraceLine(line) ||
-          _discardDeviceStackTraceLine(line) ||
-          _discardWebStacktraceLine(line) ||
-          _discardBrowserStacktraceLine(line) ||
-          line.isEmpty) {
+
+    final stackTraceLength =
+        (methodCount != null ? min(lines.length, methodCount) : lines.length);
+
+    for (var count = 0; count < stackTraceLength; count++) {
+      final line = lines[count];
+      if (count < stackTraceBeginIndex) {
         continue;
       }
       formatted.add('#$count   ${line.replaceFirst(RegExp(r'#\d+\s+'), '')}');
-      if (++count == methodCount) {
-        break;
-      }
     }
 
     if (formatted.isEmpty) {
@@ -192,11 +214,26 @@ class MessageLogPrinter extends PrettyPrinter {
         match.group(1)!.startsWith('dart:');
   }
 
-  AnsiColor _getLevelColor(Level level) =>
-      colors ? PrettyPrinter.levelColors[level]! : AnsiColor.none();
+  AnsiColor _getLevelColor(Level level) {
+    if (!colors) {
+      return const AnsiColor.none();
+    }
 
-  String _getEmoji(Level level) =>
-      printEmojis ? PrettyPrinter.levelEmojis[level]! : '';
+    return levelColors?[level] ??
+        PrettyPrinter.defaultLevelColors[level] ??
+        const AnsiColor.none();
+  }
+
+  String _getEmoji(Level level) {
+    if (!printEmojis) {
+      return '';
+    }
+
+    final emoji =
+        levelEmojis?[level] ?? PrettyPrinter.defaultLevelEmojis[level];
+
+    return '$emoji ';
+  }
 
   List<String> _formatAndPrint(
     Level level,
@@ -211,19 +248,19 @@ class MessageLogPrinter extends PrettyPrinter {
 
     final color = _getLevelColor(level);
 
-    if (includeBox[level]!) buffer.add(color(_createDivider('ID')));
+    if (_includeBox[level]!) buffer.add(color(_createDivider('ID')));
 
     final emoji = _getEmoji(level);
 
     buffer.add(color('$emoji${messageLog.id}'));
 
     if (time != null) {
-      if (includeBox[level]!) buffer.add(color(_createDivider('Time')));
+      if (_includeBox[level]!) buffer.add(color(_createDivider('Time')));
       buffer.add(color(time));
     }
 
     if (error != null) {
-      if (includeBox[level]!) buffer.add(color(_createDivider('Error')));
+      if (_includeBox[level]!) buffer.add(color(_createDivider('Error')));
 
       for (final line in error.split('\n')) {
         buffer.add(color(line));
@@ -231,7 +268,7 @@ class MessageLogPrinter extends PrettyPrinter {
     }
 
     if (stacktrace != null) {
-      if (includeBox[level]!) buffer.add(color(_createDivider('Stacktrace')));
+      if (_includeBox[level]!) buffer.add(color(_createDivider('Stacktrace')));
       for (final line in stacktrace.split('\n')) {
         buffer.add(color(line));
       }
@@ -240,19 +277,19 @@ class MessageLogPrinter extends PrettyPrinter {
     final message = messageLog.message;
 
     if (message != null) {
-      if (includeBox[level]!) buffer.add(color(_createDivider('Message')));
+      if (_includeBox[level]!) buffer.add(color(_createDivider('Message')));
       _splitText(message).forEach((text) => buffer.add(color(text)));
     }
 
     if (messageLog.data.isNotEmpty) {
-      if (includeBox[level]!) buffer.add(color(_createDivider('Data')));
+      if (_includeBox[level]!) buffer.add(color(_createDivider('Data')));
 
       final data = messageLog.data.toString();
 
       _splitText(data).forEach((text) => buffer.add(color(text)));
     }
 
-    if (includeBox[level]!) buffer.add(color(_createDivider()));
+    if (_includeBox[level]!) buffer.add(color(_createDivider()));
 
     return buffer;
   }

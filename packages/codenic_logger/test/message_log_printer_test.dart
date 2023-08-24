@@ -28,8 +28,8 @@ void main() {
               final errorLogEvent = LogEvent(
                 Level.error,
                 messageLog,
-                Exception(),
-                StackTrace.current,
+                error: Exception(),
+                stackTrace: StackTrace.current,
               );
 
               // When
@@ -70,8 +70,8 @@ void main() {
               expect(
                 formattedStackTrace,
                 '''
-#0   _delayEntrypointInvocation.<anonymous closure> (dart:isolate-patch/isolate_patch.dart:297:19)
-#1   _RawReceivePortImpl._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)''',
+#1   _delayEntrypointInvocation.<anonymous closure> (dart:isolate-patch/isolate_patch.dart:297:19)
+#2   _RawReceivePortImpl._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)''',
               );
             },
           );

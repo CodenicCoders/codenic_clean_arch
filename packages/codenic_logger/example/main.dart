@@ -22,14 +22,14 @@ void completeLogWithUserId() {
 
   codenicLogger
     ..userId = 'sample-uid'
-    ..verbose(messageLog..message = 'Has user ID')
+    ..trace(messageLog..message = 'Has user ID')
     ..userId = null;
 }
 
 void updateMessageLog() {
   final messageLog = MessageLog(id: 'update_message_log');
 
-  codenicLogger.verbose(
+  codenicLogger.trace(
     messageLog
       ..message = 'Update message log success'
       ..data.addAll(<String, dynamic>{'lorep': 'ipsum', 'mauris': 42}),
@@ -56,10 +56,10 @@ void logLevels() {
   final messageLog = MessageLog(id: 'log_levels');
 
   codenicLogger
-    ..verbose(messageLog..message = 'Verbose log success')
+    ..trace(messageLog..message = 'Trace log success')
     ..debug(messageLog..message = 'Debug log success')
     ..info(messageLog..message = 'Info log success')
     ..warn(messageLog..message = 'Warn log success')
     ..error(messageLog..message = 'Error log success')
-    ..wtf(messageLog..message = 'Wtf log success');
+    ..fatal(messageLog..message = 'Fatal log success');
 }

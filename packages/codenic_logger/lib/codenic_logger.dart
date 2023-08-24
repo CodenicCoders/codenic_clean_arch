@@ -61,22 +61,22 @@ class CodenicLogger {
             )
           : messageLog;
 
-  /// Logs a message at verbose level.
+  /// Logs a message at trace level.
   ///
   /// The [error] refers to the caught exception or error.
   ///
   /// The [stackTrace] conveys information about the call sequence that
   /// triggered the [error].
   @mustCallSuper
-  void verbose(
+  void trace(
     MessageLog messageLog, {
     dynamic error,
     StackTrace? stackTrace,
   }) =>
-      _logger.v(
+      _logger.t(
         _tryAppendUserIdToMessageLog(messageLog),
-        error,
-        stackTrace,
+        error: error,
+        stackTrace: stackTrace,
       );
 
   /// Logs a message at debug level.
@@ -89,8 +89,8 @@ class CodenicLogger {
   void debug(MessageLog messageLog, {dynamic error, StackTrace? stackTrace}) =>
       _logger.d(
         _tryAppendUserIdToMessageLog(messageLog),
-        error,
-        stackTrace,
+        error: error,
+        stackTrace: stackTrace,
       );
 
   /// Logs a message at info level.
@@ -103,8 +103,8 @@ class CodenicLogger {
   void info(MessageLog messageLog, {dynamic error, StackTrace? stackTrace}) =>
       _logger.i(
         _tryAppendUserIdToMessageLog(messageLog),
-        error,
-        stackTrace,
+        error: error,
+        stackTrace: stackTrace,
       );
 
   /// Logs a message at warn level.
@@ -117,8 +117,8 @@ class CodenicLogger {
   void warn(MessageLog messageLog, {dynamic error, StackTrace? stackTrace}) =>
       _logger.w(
         _tryAppendUserIdToMessageLog(messageLog),
-        error,
-        stackTrace,
+        error: error,
+        stackTrace: stackTrace,
       );
 
   /// Logs a message at error level.
@@ -131,22 +131,22 @@ class CodenicLogger {
   void error(MessageLog messageLog, {dynamic error, StackTrace? stackTrace}) =>
       _logger.e(
         _tryAppendUserIdToMessageLog(messageLog),
-        error,
-        stackTrace,
+        error: error,
+        stackTrace: stackTrace,
       );
 
-  /// Logs a message at wtf level.
+  /// Logs a message at fatal level.
   ///
   /// The [error] refers to the caught exception or error.
   ///
   /// The [stackTrace] conveys information about the call sequence that
   /// triggered the [error].
   @mustCallSuper
-  void wtf(MessageLog messageLog, {dynamic error, StackTrace? stackTrace}) =>
-      _logger.wtf(
+  void fatal(MessageLog messageLog, {dynamic error, StackTrace? stackTrace}) =>
+      _logger.f(
         _tryAppendUserIdToMessageLog(messageLog),
-        error,
-        stackTrace,
+        error: error,
+        stackTrace: stackTrace,
       );
 
   /// Closes the logger releases all resources.

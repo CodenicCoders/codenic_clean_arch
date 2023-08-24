@@ -1,3 +1,8 @@
+## 4.0.0
+- Bump `logger` from `1.3.0` to `2.0.1` (Includes breaking changes)
+- Replace `codenicLogger.verbose` with `codenicLogger.trace`
+- Replace `codenicLogger.wtf` with `codenicLogger.fatal`
+
 ## 3.0.0
 - Migrate to Dart 3
 

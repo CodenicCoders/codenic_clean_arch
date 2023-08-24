@@ -59,16 +59,16 @@ void main() {
         'log levels',
         () {
           test(
-            'should log verbose',
+            'should log trace',
             () {
               // Assign
               final messageLog = MessageLog(id: 'lorep_ipsum');
 
               // Act
-              logger.verbose(messageLog);
+              logger.trace(messageLog);
 
               // Assert
-              expect(printedLevel, Level.verbose);
+              expect(printedLevel, Level.trace);
               expect(printedMessage, messageLog);
               expect(printedError, isNull);
               expect(printedStackTrace, isNull);
@@ -145,16 +145,16 @@ void main() {
           );
 
           test(
-            'should log wtf',
+            'should log fatal',
             () {
               // Assign
               final messageLog = MessageLog(id: 'lorep_ipsum');
 
               // Act
-              logger.wtf(messageLog);
+              logger.fatal(messageLog);
 
               // Assert
-              expect(printedLevel, Level.wtf);
+              expect(printedLevel, Level.fatal);
               expect(printedMessage, messageLog);
               expect(printedError, isNull);
               expect(printedStackTrace, isNull);
@@ -181,7 +181,7 @@ void main() {
                 messageLog.copyWith(
                   data: <String, dynamic>{
                     '__uid__': 'sample-uid',
-                    ...messageLog.data
+                    ...messageLog.data,
                   },
                 ),
               );
