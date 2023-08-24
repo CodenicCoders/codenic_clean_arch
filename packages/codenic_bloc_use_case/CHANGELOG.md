@@ -1,3 +1,6 @@
+## 5.0.1
+- Bump dependencies
+
 ## 5.0.0
 - Add `Either` extension methods: `left`, right`, `leftOrNull` and `rightOrNull`
 - Replace `getLeftOrNull` with `leftOrNull`
