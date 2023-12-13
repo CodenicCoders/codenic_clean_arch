@@ -141,14 +141,16 @@ class ExceptionConverterSuite {
     if (error is Error) {
       // Errors must not be caught.
       // See https://stackoverflow.com/a/57004304
-      throw error;
+      if (stackTrace != null) {
+        return Error.throwWithStackTrace(error, stackTrace);
+      } else {
+        throw error;
+      }
     }
 
     if (error is! Exception) {
-      throw ArgumentError.value(
-        error,
-        'error not an exception',
-        'The error must be an Exception.',
+      throw ArgumentError(
+        'The given error is not an Exception: ${error.runtimeType}',
       );
     }
 
@@ -168,7 +170,7 @@ class ExceptionConverterSuite {
 
     // coverage:ignore-start
     throw StateError(
-      'No matching exception converesion found for ${error.runtimeType}',
+      'No matching exception conversion found for ${error.runtimeType}',
     );
     // coverage:ignore-end
   }

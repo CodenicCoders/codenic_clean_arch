@@ -1,3 +1,7 @@
+## 3.1.2
+- Bump `codenic_logger` from `4.0.0` to `4.0.1`
+- Rethrow error with stacktrace
+
 ## 3.1.1
 - Bump dependencies
 

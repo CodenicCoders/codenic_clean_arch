@@ -318,6 +318,24 @@ void main() {
           );
 
           test(
+            'should throw an `Error` when an `Error` with `StackTrace` is '
+            'passed',
+            () {
+              final stackTrace = StackTrace.fromString('Fake stack trace');
+
+              try {
+                exceptionConverterSuite.convert(
+                  error: const OutOfMemoryError(),
+                  stackTrace: stackTrace,
+                );
+              } catch (e, s) {
+                expect(e, isA<OutOfMemoryError>());
+                expect(s, stackTrace);
+              }
+            },
+          );
+
+          test(
             'should throw an `ArgumentError` when an a non-exception is passed',
             () {
               expect(
