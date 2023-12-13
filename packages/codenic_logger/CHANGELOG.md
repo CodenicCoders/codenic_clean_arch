@@ -1,3 +1,7 @@
+## 4.0.1
+- Bump `logger` from `2.0.1` to `2.0.2+1`.
+- Bump `meta` from `1.9.1` to `1.11.0`.
+
 ## 4.0.0
 - Bump `logger` from `1.3.0` to `2.0.1` (Includes breaking changes)
 - Replace `codenicLogger.verbose` with `codenicLogger.trace`
