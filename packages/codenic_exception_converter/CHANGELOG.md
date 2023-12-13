@@ -1,3 +1,6 @@
+## 3.2.0
+- Add `EitherExtension` for easier access of left and right values
+
 ## 3.1.2
 - Bump `codenic_logger` from `4.0.0` to `4.0.1`
 - Rethrow error with stacktrace
