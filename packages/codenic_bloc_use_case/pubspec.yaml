@@ -1,6 +1,6 @@
 name: codenic_bloc_use_case
 description: A suite of abstract cubits to reduce boilerplate code and construct app use cases.
-version: 5.0.1
+version: 5.1.0
 repository: https://github.com/CodenicCoders/codenic_clean_arch/tree/main/packages/codenic_bloc_use_case
 issue_tracker: https://github.com/CodenicCoders/codenic_clean_arch/issues
 homepage: https://arch.codenic.dev
@@ -11,11 +11,11 @@ environment:
 
 dependencies:
   bloc: ^8.1.2
+  codenic_exception_converter: ^3.2.0+1
   equatable: ^2.0.5
-  fpdart: ^1.1.0
-  meta: ^1.9.1
+  meta: ^1.11.0
 
 dev_dependencies:
-  bloc_test: ^9.1.4
-  test: ^1.24.6
-  very_good_analysis: ^5.0.0+1
+  bloc_test: ^9.1.5
+  test: ^1.24.9
+  very_good_analysis: ^5.1.0

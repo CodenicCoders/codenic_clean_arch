@@ -88,7 +88,7 @@ final class CountFruit
   ) async {
     if (params.fruits.isEmpty) {
       // When the given fruits is empty, then a left value is returned
-      return const Left(Failure('There are no fruits to count'));
+      return const Left(Failure(message: 'There are no fruits to count'));
     }
 
     final fruitCount = <String, int>{};

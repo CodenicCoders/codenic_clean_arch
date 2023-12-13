@@ -15,7 +15,7 @@ final class TestWatchEvenNumbers extends Watcher<int, String, int> {
   StreamController<int>? _streamController;
 
   @override
-  Future<Either<String, Stream<int>>> onCall(int params) async {
+  Future<Either<String, VerboseStream<String, int>>> onCall(int params) async {
     await ensureAsync();
 
     if (params % 2 != 0 || params <= 0) {
@@ -27,7 +27,7 @@ final class TestWatchEvenNumbers extends Watcher<int, String, int> {
 
     _streamController = StreamController();
 
-    final verboseStream = Stream<int>(
+    final verboseStream = VerboseStream<String, int>(
       stream: _streamController!.stream,
       errorConverter: (error, stackTrace) => error.toString(),
     );

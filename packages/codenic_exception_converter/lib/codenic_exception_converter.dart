@@ -5,3 +5,4 @@ export 'package:fpdart/fpdart.dart' show Either, Left, Right;
 export 'src/exception_converter_suite.dart';
 export 'src/exception_converters/exception_converter.dart';
 export 'src/failures/failure.dart';
+export 'src/util/either_extension.dart';

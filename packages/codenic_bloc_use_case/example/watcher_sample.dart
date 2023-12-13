@@ -133,7 +133,9 @@ final class WatchFruitBasket
   ) async {
     if (params.maxCapacity < 1) {
       // When the basket capacity is less than 1, then a left value is returned
-      return const Left(Failure('Basket capacity must be greater than 0'));
+      return const Left(
+        Failure(message: 'Basket capacity must be greater than 0'),
+      );
     }
 
     basketCapacity = params.maxCapacity;
@@ -152,7 +154,8 @@ final class WatchFruitBasket
     return Right(
       VerboseStream(
         stream: streamController!.stream,
-        errorConverter: (error, stackTrace) => Failure(error.toString()),
+        errorConverter: (error, stackTrace) =>
+            Failure(message: error.toString()),
       ),
     );
   }

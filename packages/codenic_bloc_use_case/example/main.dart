@@ -6,7 +6,6 @@ import 'dart:io';
 
 import 'package:codenic_bloc_use_case/codenic_bloc_use_case.dart';
 
-import 'src/failure.dart';
 import 'src/simple_bloc_observer.dart';
 
 part 'runner_sample.dart';

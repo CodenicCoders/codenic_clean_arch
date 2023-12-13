@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
-import 'package:fpdart/fpdart.dart';
+import 'package:codenic_bloc_use_case/codenic_bloc_use_case.dart';
 import 'package:meta/meta.dart';
 
 /// An abstract class for the core functionalities of a use case.

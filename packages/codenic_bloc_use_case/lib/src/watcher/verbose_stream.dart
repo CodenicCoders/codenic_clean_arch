@@ -3,11 +3,8 @@ part of 'watcher.dart';
 /// {@template VerboseStream}
 ///
 /// A stream wrapper that enforces a [stream] to explicitly return either
-/// [LE] or [RE] values.
-///
-/// On data events, a [RE] event will be emitted.
-/// On error events, a [LE] event will be emitted as a replacement for the
-/// [Object] error.
+/// a [RE] right event on data events, or a [LE] left event on error events as
+/// a replacement for the [Object] error.
 ///
 /// For more info about data and error events, see [Stream].
 /// {@endtemplate}
