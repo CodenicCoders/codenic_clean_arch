@@ -1,3 +1,7 @@
+## 4.0.2
+- Bump dependency versions.
+- Deprecate `MessageLogPrinter.printTime`.
+
 ## 4.0.1
 - Bump `logger` from `2.0.1` to `2.0.2+1`.
 - Bump `meta` from `1.9.1` to `1.11.0`.

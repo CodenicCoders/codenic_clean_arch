@@ -1,3 +1,4 @@
+import 'package:domain/domain.dart';
 import 'package:domain/note/entities/note_entry.dart';
 import 'package:domain/note/use_cases/create_note_entry.dart';
 import 'package:domain/note/use_cases/delete_note_entry.dart';
@@ -20,12 +21,12 @@ class NoteEntryFormPage extends StatefulWidget {
 
 class _NoteEntryFormPageState extends State<NoteEntryFormPage> {
   /// The text controller for the note title.
-  late final _titleController = TextEditingController(
-      text: widget.noteEntry != null ? widget.noteEntry!.title : null);
+  late final _titleController =
+      TextEditingController(text: widget.noteEntry?.title);
 
   /// The text controller for the note content.
-  late final _contentController = TextEditingController(
-      text: widget.noteEntry != null ? widget.noteEntry!.content : null);
+  late final _contentController =
+      TextEditingController(text: widget.noteEntry?.content);
 
   @override
   void dispose() {
@@ -75,28 +76,28 @@ class _NoteEntryFormPageState extends State<NoteEntryFormPage> {
   Widget _saveButton() {
     return IconButton(
       onPressed: () async {
-        final result = widget.noteEntry == null
-            ? await context.read<CreateNoteEntry>().run(
-                  params: CreateNoteEntryParams(
-                    title: _titleController.text,
-                    content: _contentController.text,
-                  ),
-                )
-            : await context.read<UpdateNoteEntry>().run(
-                  params: UpdateNoteEntryParams(
-                    id: widget.noteEntry!.id,
-                    title: _titleController.text,
-                    content: _contentController.text,
-                  ),
-                );
+        final Either<Failure, void>? result;
 
-        if (!mounted) {
-          return;
+        if (widget.noteEntry == null) {
+          result = await context.read<CreateNoteEntry>().run(
+                params: CreateNoteEntryParams(
+                  title: _titleController.text,
+                  content: _contentController.text,
+                ),
+              );
+        } else {
+          result = await context.read<UpdateNoteEntry>().run(
+                params: UpdateNoteEntryParams(
+                  id: widget.noteEntry!.id,
+                  title: _titleController.text,
+                  content: _contentController.text,
+                ),
+              );
         }
 
-        if (result?.isRight() ?? false) {
-          Navigator.of(context).pop();
-        }
+        if (!mounted) return;
+
+        if (result?.isRight() ?? false) Navigator.of(context).pop();
       },
       icon: const Icon(Icons.save),
     );

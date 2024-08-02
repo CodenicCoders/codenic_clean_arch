@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'dart:isolate';
 import 'dart:math';
 
 import 'package:codenic_logger/src/message_log.dart';
@@ -12,7 +11,7 @@ import 'package:logger/logger.dart';
 /// and prevents long texts from being truncated.
 ///
 /// Output looks like this:
-/// ```
+/// ```bash
 /// ─ID────────────────────────
 ///  Identifier
 /// ─Time──────────────────────
@@ -66,8 +65,6 @@ class MessageLogPrinter extends PrettyPrinter {
   /// ```
   final List<RegExp> stackTraceBlocklist;
 
-  static final _startTime = DateTime.now();
-
   /// Matches a stacktrace line as generated on Android/iOS devices.
   /// For example:
   /// #1      Logger.log (package:logger/src/logger.dart:115:29)
@@ -93,26 +90,6 @@ class MessageLogPrinter extends PrettyPrinter {
   /// See [PrettyPrinter] `_includeBox` private variable for more information.
   late final Map<Level, bool> _includeBox;
 
-  /// A replacement for [PrettyPrinter.getTime].
-  ///
-  /// The [PrettyPrinter.getTime] throws an [Exception] whenever it is
-  /// called in an [Isolate]. The exception indicates that the
-  /// `static nullable _startTime` of [PrettyPrinter] has not been initialized.
-  /// As a workaround, a non-nullable [_startTime] has been created to
-  /// alleviate the issue.
-  @override
-  String getTime(DateTime time) {
-    String padNumber(int num, int width) => num.toString().padLeft(width, '0');
-
-    final now = time;
-    final h = padNumber(now.hour, 2);
-    final min = padNumber(now.minute, 2);
-    final sec = padNumber(now.second, 2);
-    final ms = padNumber(now.millisecond, 3);
-    final timeSinceStart = now.difference(_startTime).toString();
-    return '$h:$min:$sec.$ms (+$timeSinceStart)';
-  }
-
   @override
   List<String> log(LogEvent event) {
     String? stackTraceFormatted;
@@ -129,7 +106,7 @@ class MessageLogPrinter extends PrettyPrinter {
     return _formatAndPrint(
       event.level,
       event.message as MessageLog,
-      printTime ? getTime(event.time) : null,
+      dateTimeFormat(event.time),
       event.error?.toString(),
       stackTraceFormatted,
     );
@@ -314,7 +291,6 @@ class MessageLogPrinter extends PrettyPrinter {
     int? lineLength,
     bool? colors,
     bool? printEmojis,
-    bool? printTime,
     Map<Level, bool>? excludeBox,
     bool? noBoxingByDefault,
     List<RegExp>? stackTraceBlocklist,
@@ -326,7 +302,6 @@ class MessageLogPrinter extends PrettyPrinter {
       lineLength: lineLength ?? this.lineLength,
       colors: colors ?? this.colors,
       printEmojis: printEmojis ?? this.printEmojis,
-      printTime: printTime ?? this.printTime,
       excludeBox: excludeBox ?? this.excludeBox,
       noBoxingByDefault: noBoxingByDefault ?? this.noBoxingByDefault,
       stackTraceBlocklist: stackTraceBlocklist ?? this.stackTraceBlocklist,
