@@ -15,13 +15,15 @@ final class SocketExceptionConverter<T>
   const SocketExceptionConverter();
 
   @override
-  Failure convert({
-    required SocketException exception,
-    StackTrace? stackTrace,
-    CodenicLogger? logger,
-    MessageLog? messageLog,
-  }) =>
-      const SocketFailure();
+  Failure convert(SocketException exception) => const SocketFailure();
+
+  @override
+  void logException(
+    SocketException exception,
+    StackTrace stackTrace,
+    CodenicLogger logger,
+    MessageLog messageLog,
+  ) {}
 }
 
 typedef PrinterCallback = List<String> Function(
@@ -80,98 +82,6 @@ void main() {
         printedError = null;
         printedStackTrace = null;
       });
-
-      group(
-        'observe sync',
-        () {
-          test(
-            'should return a `NetworkFailure` when a socket exception is '
-            'thrown',
-            () async {
-              final result = await exceptionConverterSuite.observe<void>(
-                messageLog: messageLog,
-                exceptionConverters: [const SocketExceptionConverter()],
-                task: (messageLog) {
-                  throw const SocketException('test');
-                },
-              );
-
-              result.fold(
-                (l) => expect(l, isA<SocketFailure>()),
-                (r) => throw StateError(''),
-              );
-            },
-          );
-
-          test(
-            'should return a failure from the default exception converters '
-            'when an exception is thrown',
-            () async {
-              final exceptionConverter = ExceptionConverterSuite(
-                exceptionConverters: [SocketExceptionConverter.new],
-              );
-
-              final result = await exceptionConverter.observe<void>(
-                messageLog: messageLog,
-                task: (messageLog) {
-                  throw const SocketException('test');
-                },
-              );
-
-              result.fold(
-                (l) => expect(l, isA<SocketFailure>()),
-                (r) => throw StateError(''),
-              );
-            },
-          );
-
-          test(
-            'should return a base failure when an exception is thrown without '
-            'an exception converter',
-            () async {
-              final result = await exceptionConverterSuite.observe<void>(
-                messageLog: messageLog,
-                task: (messageLog) {
-                  throw const FormatException();
-                },
-              );
-
-              result.fold(
-                (l) => expect(l, isA<Failure>()),
-                (r) => throw StateError(''),
-              );
-            },
-          );
-
-          test('should log a warning when a failure is returned, ', () async {
-            await exceptionConverterSuite.observe<void>(
-              messageLog: messageLog,
-              task: (messageLog) {
-                return const Left(Failure());
-              },
-            );
-
-            expect(printedLevel, Level.warning);
-            expect(printedMessage, messageLog);
-            expect(printedError, isNull);
-            expect(printedStackTrace, isNull);
-          });
-
-          test('should log an info on success', () async {
-            await exceptionConverterSuite.observe<void>(
-              messageLog: messageLog,
-              task: (messageLog) {
-                return const Right(null);
-              },
-            );
-
-            expect(printedLevel, Level.info);
-            expect(printedMessage, messageLog);
-            expect(printedError, isNull);
-            expect(printedStackTrace, isNull);
-          });
-        },
-      );
 
       group(
         'observe',
@@ -268,6 +178,28 @@ void main() {
               expect(printedStackTrace, isNull);
             },
           );
+
+          test('should add `__output__` in `MessageLog` on success', () async {
+            final result = await exceptionConverterSuite.observe<String>(
+              messageLog: messageLog,
+              printOutput: true,
+              task: (messageLog) async => const Right('Success!'),
+            );
+
+            expect(result, messageLog.data['__output__']);
+          });
+
+          test('should add `output` in `MessageLog` on error', () async {
+            final result = await exceptionConverterSuite.observe<String>(
+              messageLog: messageLog,
+              printOutput: true,
+              task: (messageLog) async {
+                throw const SocketException('test');
+              },
+            );
+
+            expect(result, messageLog.data['__output__']);
+          });
         },
       );
 
@@ -278,7 +210,6 @@ void main() {
             'should convert `SocketException` to `NetworkFailure`',
             () {
               final result = exceptionConverterSuite.convert(
-                messageLog: messageLog,
                 error: const SocketException('test'),
                 exceptionConverters: [const SocketExceptionConverter()],
               );
@@ -296,7 +227,6 @@ void main() {
               );
 
               final result = exceptionConverter.convert(
-                messageLog: messageLog,
                 error: const SocketException('test'),
               );
 
@@ -305,44 +235,10 @@ void main() {
           );
 
           test(
-            'should throw an `Error` when an `Error` is passed',
-            () {
-              expect(
-                () => exceptionConverterSuite.convert(
-                  messageLog: messageLog,
-                  error: const OutOfMemoryError(),
-                ),
-                throwsA(isA<OutOfMemoryError>()),
-              );
-            },
-          );
-
-          test(
-            'should throw an `Error` when an `Error` with `StackTrace` is '
-            'passed',
-            () {
-              final stackTrace = StackTrace.fromString('Fake stack trace');
-
-              try {
-                exceptionConverterSuite.convert(
-                  error: const OutOfMemoryError(),
-                  stackTrace: stackTrace,
-                );
-              } catch (e, s) {
-                expect(e, isA<OutOfMemoryError>());
-                expect(s, stackTrace);
-              }
-            },
-          );
-
-          test(
             'should throw an `ArgumentError` when an a non-exception is passed',
             () {
               expect(
-                () => exceptionConverterSuite.convert(
-                  messageLog: messageLog,
-                  error: 'Test',
-                ),
+                () => exceptionConverterSuite.convert(error: 'Test'),
                 throwsA(isA<ArgumentError>()),
               );
             },

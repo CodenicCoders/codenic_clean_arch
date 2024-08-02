@@ -68,9 +68,10 @@ class ExceptionConverterSuite {
 
   /// Converts any uncaught [Exception] thrown by the [task] into a [Failure].
   ///
-  /// {@template observe}
   /// A [messageLog](https://arch.codenic.dev/packages/codenic-logger)
-  /// can be provided to log the result of the [task].
+  /// can be provided to log the result of the [task] after completion. If
+  /// [printOutput] is `true`, then the returned output of the [task] is
+  /// printed in the [messageLog].
   ///
   /// If no error occurs, then value [T] is returned and
   /// [logger.info(messageLog)] is called.
@@ -88,11 +89,11 @@ class ExceptionConverterSuite {
   /// -  [Error]s are not caught by this method considering that it is bad
   /// practice to catch an [Error].
   /// See https://groups.google.com/a/dartlang.org/g/misc/c/lx9CXiV3o30/m/s5l_PwpHUGAJ.
-  /// {@endtemplate}
   Future<Either<Failure, T>> observe<T>({
     required FutureOr<Either<Failure, T>> Function(MessageLog? messageLog) task,
     List<ExceptionConverter<Exception, T>>? exceptionConverters,
     MessageLog? messageLog,
+    bool printOutput = false,
   }) async {
     final extendedExceptionConverters =
         _extendedExceptionConverters<T>(exceptionConverters);
@@ -103,6 +104,8 @@ class ExceptionConverterSuite {
         final result = await task(messageLog);
 
         if (messageLog != null) {
+          messageLog.data['__output__'] = result;
+
           result.fold(
             (l) => logger.warn(messageLog),
             (r) => logger.info(messageLog),
@@ -115,6 +118,7 @@ class ExceptionConverterSuite {
             task: previousValue,
             logger: logger,
             messageLog: messageLog,
+            printOutput: printOutput,
           ),
     )(messageLog);
   }
@@ -128,26 +132,10 @@ class ExceptionConverterSuite {
   ///
   /// If the given [error] is not an [Exception], then an [ArgumentError] is
   /// thrown.
-  ///
-  /// A [messageLog](https://arch.codenic.dev/packages/codenic-logger)
-  /// can be provided to log the result if the target [ExceptionConverter]
-  /// supports it.
   Failure convert({
     required Object error,
-    StackTrace? stackTrace,
     List<ExceptionConverter<Exception, void>>? exceptionConverters,
-    MessageLog? messageLog,
   }) {
-    if (error is Error) {
-      // Errors must not be caught.
-      // See https://stackoverflow.com/a/57004304
-      if (stackTrace != null) {
-        return Error.throwWithStackTrace(error, stackTrace);
-      } else {
-        throw error;
-      }
-    }
-
     if (error is! Exception) {
       throw ArgumentError(
         'The given error is not an Exception: ${error.runtimeType}',
@@ -155,16 +143,11 @@ class ExceptionConverterSuite {
     }
 
     final extendedExceptionConverters =
-        _extendedExceptionConverters<void>(exceptionConverters);
+        _extendedExceptionConverters(exceptionConverters);
 
     for (final exceptionConverter in extendedExceptionConverters) {
       if (exceptionConverter.exceptionEquals(error)) {
-        return exceptionConverter.convert(
-          exception: error,
-          messageLog: messageLog,
-          logger: logger,
-          stackTrace: stackTrace,
-        );
+        return exceptionConverter.convert(error);
       }
     }
 

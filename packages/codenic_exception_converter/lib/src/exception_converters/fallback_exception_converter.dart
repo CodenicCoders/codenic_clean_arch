@@ -13,20 +13,19 @@ final class FallbackExceptionConverter<T>
   const FallbackExceptionConverter();
 
   @override
-  Failure convert({
-    required Exception exception,
-    StackTrace? stackTrace,
-    CodenicLogger? logger,
-    MessageLog? messageLog,
-  }) {
-    if (logger != null && messageLog != null) {
-      logger.error(
-        messageLog..message = 'Unknown failure occurred',
-        error: exception,
-        stackTrace: stackTrace,
-      );
-    }
+  Failure convert(Exception exception) => const Failure();
 
-    return const Failure();
+  @override
+  void logException(
+    Exception exception,
+    StackTrace stackTrace,
+    CodenicLogger logger,
+    MessageLog messageLog,
+  ) {
+    logger.error(
+      messageLog..message = 'Unknown failure occurred',
+      error: exception,
+      stackTrace: stackTrace,
+    );
   }
 }

@@ -1,3 +1,9 @@
+## 3.3.0
+- Bump dependency versions.
+- Add `printOutput` boolean parameter to `ExceptionConverter.observe` and `ExceptionConverter.convert` to print the returned output of the task as part of the `MessageLog.data` keyed by `__output__`.
+- Remove exception handling in `ExceptionConverter.convert` and move it to the new
+  `ExceptionConverter.logException` method.
+
 ## 3.2.0
 - Add `EitherExtension` for easier access of left and right values
 
@@ -9,8 +15,7 @@
 - Bump dependencies
 
 ## 3.1.0
-- BUGFIX: `ExceptionConverter.exceptionEquals` now correctly compares
-`Exception` instances
+- BUGFIX: `ExceptionConverter.exceptionEquals` now correctly compares `Exception` instances
 
 ## 3.0.0
 - Migrate to Dart 3
@@ -32,10 +37,8 @@
 
 ## 1.0.2
 - Bump dependencies
-- Use `FutureOr` in `ExceptionConverter.observe` and 
-`ExceptionConverter.observe` `task` parameters.
-- Deprecate `ExceptionConverter.observeSync` and 
-`ExceptionConverterSuite.observeSync`
+- Use `FutureOr` in `ExceptionConverter.observe` and `ExceptionConverter.observe` `task` parameters.
+- Deprecate `ExceptionConverter.observeSync` and `ExceptionConverterSuite.observeSync`
 
 ## 1.0.1
 - Update documentation link in README.md

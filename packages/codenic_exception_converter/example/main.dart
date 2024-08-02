@@ -25,6 +25,7 @@ Future<void> _observeWithDefaultConverters() async {
 
   final result = await exceptionConverterSuite.observe<void>(
     messageLog: MessageLog(id: 'observe-with-default-converters'),
+    printOutput: true,
     task: (messageLog) {
       // Simulate exception
       throw const SocketException('test');
@@ -41,6 +42,8 @@ Future<void> _observeWithArgConverters() async {
     messageLog: MessageLog(id: 'observe-with-argument-converters'),
     // Provide an exception converter as an argument
     exceptionConverters: [const SocketExceptionConverter()],
+
+    printOutput: true,
     task: (messageLog) {
       // Simulate exception
       throw const SocketException('test');
@@ -55,6 +58,7 @@ Future<void> _observeNoExceptionConverters() async {
 
   final result = await exceptionConverterSuite.observe<void>(
     messageLog: MessageLog(id: 'observe-with-no-exception-converters'),
+    printOutput: true,
     task: (messageLog) {
       try {
         // Simulate exception
@@ -94,17 +98,14 @@ final class SocketExceptionConverter<T>
   const SocketExceptionConverter();
 
   @override
-  Failure convert({
-    required SocketException exception,
-    StackTrace? stackTrace,
-    CodenicLogger? logger,
-    MessageLog? messageLog,
-  }) {
-    if (logger != null && messageLog != null) {
-      // Optional: you can log the exception here if needed
-      logger.error(messageLog, error: exception, stackTrace: stackTrace);
-    }
+  Failure convert(SocketException exception) => const NetworkFailure();
 
-    return const NetworkFailure();
-  }
+  @override
+  void logException(
+    SocketException exception,
+    StackTrace stackTrace,
+    CodenicLogger logger,
+    MessageLog messageLog,
+  ) =>
+      logger.error(messageLog, error: exception, stackTrace: stackTrace);
 }
