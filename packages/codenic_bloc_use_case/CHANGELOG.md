@@ -1,3 +1,6 @@
+## 5.1.1
+- Bump dependencies.
+
 ## 5.1.0
 - Import `codenic_exception_converter`
 - Update example

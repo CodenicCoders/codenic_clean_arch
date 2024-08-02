@@ -12,7 +12,7 @@ part 'runner_sample.dart';
 part 'watcher_sample.dart';
 
 /// To run, enter the following code:
-/// ```
+/// ```bash
 /// dart run example/main.dart
 /// ```
 ///
