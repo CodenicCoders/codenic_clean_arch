@@ -1,3 +1,6 @@
+## 6.0.0
+- Update `codenic_exception_converter` with breaking change.
+
 ## 5.1.1
 - Bump dependencies.
 
