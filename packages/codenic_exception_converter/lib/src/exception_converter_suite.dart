@@ -73,11 +73,7 @@ class ExceptionConverterSuite {
   /// [printOutput] is `true`, then the returned output of the [task] is
   /// printed in the [messageLog].
   ///
-  /// If no error occurs, then value [T] is returned and
-  /// [logger.info(messageLog)] is called.
-  ///
-  /// If a [Failure] is returned by the [task], then [logger.warn()] is
-  /// called.
+  /// If no error occurs, then value [T] is returned.
   ///
   /// If an [Exception] is thrown, then it is handled by the
   /// [exceptionConverters] and [ExceptionConverterSuite.exceptionConverters].
@@ -104,7 +100,7 @@ class ExceptionConverterSuite {
         final result = await task(messageLog);
 
         if (messageLog != null) {
-          messageLog.data['__output__'] = result;
+          if (printOutput) messageLog.data['__output__'] = result;
 
           result.fold(
             (l) => logger.warn(messageLog),

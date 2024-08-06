@@ -42,7 +42,6 @@ Future<void> _observeWithArgConverters() async {
     messageLog: MessageLog(id: 'observe-with-argument-converters'),
     // Provide an exception converter as an argument
     exceptionConverters: [const SocketExceptionConverter()],
-
     printOutput: true,
     task: (messageLog) {
       // Simulate exception
@@ -58,7 +57,6 @@ Future<void> _observeNoExceptionConverters() async {
 
   final result = await exceptionConverterSuite.observe<void>(
     messageLog: MessageLog(id: 'observe-with-no-exception-converters'),
-    printOutput: true,
     task: (messageLog) {
       try {
         // Simulate exception

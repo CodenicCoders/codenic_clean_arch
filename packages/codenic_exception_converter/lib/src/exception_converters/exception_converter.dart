@@ -47,7 +47,7 @@ abstract base class ExceptionConverter<E extends Exception, T> {
       final result = Left<Failure, T>(convert(exception));
 
       if (logger != null && messageLog != null) {
-        messageLog.data['__output__'] = result;
+        if (printOutput) messageLog.data['__output__'] = result;
         logException(exception, stackTrace, logger, messageLog);
       }
 

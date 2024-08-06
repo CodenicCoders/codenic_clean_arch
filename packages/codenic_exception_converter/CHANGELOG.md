@@ -1,4 +1,8 @@
-## 3.3.0
+## 4.0.1
+- Fix: `printOutput` parameter in `ExceptionConverter.observe` and 
+`ExceptionConverter.convert` does not disable output printing.
+
+## 4.0.0
 - Bump dependency versions.
 - Add `printOutput` boolean parameter to `ExceptionConverter.observe` and `ExceptionConverter.convert` to print the returned output of the task as part of the `MessageLog.data` keyed by `__output__`.
 - Remove exception handling in `ExceptionConverter.convert` and move it to the new
