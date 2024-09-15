@@ -7,7 +7,10 @@ import 'package:test/test.dart';
 class MockLogger extends Mock implements CodenicLogger {}
 
 class SocketFailure extends Failure {
-  const SocketFailure({super.message = 'Socket failure occurred'});
+  const SocketFailure({
+    super.code = 'socket-failure',
+    super.message = 'Socket failure occurred',
+  });
 }
 
 final class SocketExceptionConverter<T>

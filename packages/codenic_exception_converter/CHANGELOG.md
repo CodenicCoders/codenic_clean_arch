@@ -1,3 +1,6 @@
+## 4.1.0
+- Add `code` in `Failure` to store the error code.
+
 ## 4.0.1
 - Fix: `printOutput` parameter in `ExceptionConverter.observe` and 
 `ExceptionConverter.convert` does not disable output printing.
