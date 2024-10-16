@@ -21,7 +21,7 @@ final class SocketExceptionConverter<T>
   Failure convert(SocketException exception) => const SocketFailure();
 
   @override
-  void logException(
+  void logError(
     SocketException exception,
     StackTrace stackTrace,
     CodenicLogger logger,
@@ -95,7 +95,7 @@ void main() {
             () async {
               final result = await exceptionConverterSuite.observe<void>(
                 messageLog: messageLog,
-                exceptionConverters: [const SocketExceptionConverter()],
+                errorConverters: [const SocketExceptionConverter()],
                 task: (messageLog) {
                   throw const SocketException('test');
                 },
@@ -113,7 +113,7 @@ void main() {
             'when an exception is thrown',
             () async {
               final exceptionConverter = ExceptionConverterSuite(
-                defaultExceptionConverters: [SocketExceptionConverter.new],
+                defaultErrorConverters: [SocketExceptionConverter.new],
               );
 
               final result = await exceptionConverter.observe<void>(
@@ -182,19 +182,6 @@ void main() {
             },
           );
 
-          test('should handle an error', () async {
-            final result = await exceptionConverterSuite.observe<void>(
-              messageLog: messageLog,
-              task: (messageLog) => throw Error(),
-              onError: (error, stackTrace) => const Left(Failure()),
-            );
-
-            result.fold(
-              (l) => expect(l, isA<Failure>()),
-              (r) => throw StateError(''),
-            );
-          });
-
           test('should add `__output__` in `MessageLog` on success', () async {
             final result = await exceptionConverterSuite.observe<String>(
               messageLog: messageLog,
@@ -226,8 +213,8 @@ void main() {
             'should convert `SocketException` to `NetworkFailure`',
             () {
               final result = exceptionConverterSuite.convert(
-                exception: const SocketException('test'),
-                exceptionConverters: [const SocketExceptionConverter()],
+                error: const SocketException('test'),
+                errorConverters: [const SocketExceptionConverter()],
               );
 
               expect(result, isA<SocketFailure>());
@@ -239,11 +226,11 @@ void main() {
             'default exception converters',
             () {
               final exceptionConverter = ExceptionConverterSuite(
-                defaultExceptionConverters: [SocketExceptionConverter.new],
+                defaultErrorConverters: [SocketExceptionConverter.new],
               );
 
               final result = exceptionConverter.convert(
-                exception: const SocketException('test'),
+                error: const SocketException('test'),
               );
 
               expect(result, isA<SocketFailure>());

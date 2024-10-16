@@ -1,4 +1,11 @@
-## 5.0.1
+## 5.2.1
+- Bug fix.
+
+## 5.2.0
+- Allow `Errors` to be converted into failures by introducing a 
+`ErrorConverter` class.
+
+## 5.1.0
 - Improve docs
 
 ## 5.0.0

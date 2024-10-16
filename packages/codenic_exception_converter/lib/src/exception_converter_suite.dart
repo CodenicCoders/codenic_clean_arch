@@ -3,19 +3,18 @@ import 'dart:async';
 import 'package:codenic_exception_converter/codenic_exception_converter.dart';
 import 'package:codenic_exception_converter/src/exception_converters/fallback_exception_converter.dart';
 
-/// A signature for [ExceptionConverter] factories.
-typedef ExceptionConverterFactory = ExceptionConverter<Exception, T>
-    Function<T>();
+/// A signature for [ErrorConverter] factories.
+typedef ErrorConverterFactory = ErrorConverter<Object, T> Function<T>();
 
-/// {@template ExceptionConverter}
-/// A class which allows multiple [ExceptionConverter]s to be grouped together,
-/// so that when a task is executed and an exception is thrown, it can be
+/// {@template ExceptionConverterSuite}
+/// A class which allows multiple [ErrorConverter]s to be grouped together,
+/// so that when a task is executed and an error is thrown, it can be
 /// converted into the appropriate [Failure] object.
 /// {@endtemplate}
 class ExceptionConverterSuite {
-  /// {@macro ExceptionConverter}
+  /// {@macro ExceptionConverterSuite}
   ExceptionConverterSuite({
-    this.defaultExceptionConverters = const [],
+    this.defaultErrorConverters = const [],
     CodenicLogger? logger,
   }) : logger = logger ?? CodenicLogger() {
     _addPredefinedStackTraceBlocklist();
@@ -53,18 +52,17 @@ class ExceptionConverterSuite {
     }
   }
 
-  /// The default [ExceptionConverter]s used to convert [Exception]s into
-  /// [Failure]s.
+  /// The default [ErrorConverter]s used to convert errors into [Failure]s.
   ///
-  /// Here you can provide your own default [ExceptionConverter]s to convert
-  /// [Exception]s into [Failure]s which will be used by the [observe] and
+  /// Here you can provide your own default [ErrorConverter]s to convert
+  /// errors into [Failure]s which will be used by the [observe] and
   /// [convert] methods.
-  final List<ExceptionConverterFactory> defaultExceptionConverters;
+  final List<ErrorConverterFactory> defaultErrorConverters;
 
   /// The default logger used by [observe].
   final CodenicLogger logger;
 
-  /// Converts any uncaught [Exception] thrown by the [task] into a [Failure].
+  /// Converts any uncaught errors thrown by the [task] into a [Failure].
   ///
   /// A [messageLog](https://arch.codenic.dev/packages/codenic-logger)
   /// can be provided to log the result of the [task] after completion. If
@@ -73,86 +71,74 @@ class ExceptionConverterSuite {
   ///
   /// If no error occurs, then value [T] is returned.
   ///
-  /// If an [Exception] is thrown, then it will be converted into a [Failure]
-  /// using the [ExceptionConverter]s provided in the [exceptionConverters]
-  /// and [ExceptionConverterSuite.defaultExceptionConverters], if any. If no
-  /// matching [ExceptionConverter] is found, then the
-  /// [FallbackExceptionConverter] will be used.
-  ///
-  /// If an [Error] is thrown, then it will be rethrown or handled by the
-  /// [onError] function, if provided.
+  /// If an error is thrown, then it will be converted into a [Failure]
+  /// using the [ErrorConverter]s provided in the [errorConverters]
+  /// and [ExceptionConverterSuite.defaultErrorConverters], if any. If no
+  /// matching [ErrorConverter] is found, then the [FallbackExceptionConverter]
+  /// will be used for thrown [Exception]s. Otherwise, the [Error] will be
+  /// thrown as is.
   FutureOr<Either<Failure, T>> observe<T>({
     required FutureOr<Either<Failure, T>> Function(MessageLog? messageLog) task,
-    List<ExceptionConverter<Exception, T>>? exceptionConverters,
+    List<ErrorConverter<Object, T>>? errorConverters,
     MessageLog? messageLog,
     bool printOutput = false,
-    FutureOr<Either<Failure, T>> Function(Error error, StackTrace stacktrace)?
-        onError,
   }) async {
-    final extendedExceptionConverters =
-        _extendedExceptionConverters<T>(exceptionConverters);
+    final extendedErrorConverters =
+        _extendedErrorConverters<T>(errorConverters);
 
-    try {
-      return await extendedExceptionConverters
-          .fold<FutureOr<Either<Failure, T>> Function(MessageLog? messageLog)>(
-        (messageLog) async {
-          final result = await task(messageLog);
+    return await extendedErrorConverters
+        .fold<FutureOr<Either<Failure, T>> Function(MessageLog? messageLog)>(
+      (messageLog) async {
+        final result = await task(messageLog);
 
-          if (messageLog != null) {
-            if (printOutput) messageLog.data['__output__'] = result;
+        if (messageLog != null) {
+          if (printOutput) messageLog.data['__output__'] = result;
 
-            result.fold(
-              (l) => logger.warn(messageLog),
-              (r) => logger.info(messageLog),
-            );
-          }
+          result.fold(
+            (l) => logger.warn(messageLog),
+            (r) => logger.info(messageLog),
+          );
+        }
 
-          return result;
-        },
-        (task, element) => (messageLog) => element.observe(
-              task: task,
-              logger: logger,
-              messageLog: messageLog,
-              printOutput: printOutput,
-            ),
-      )(messageLog);
-    }
-    // ignore: avoid_catching_errors
-    on Error catch (error, stacktrace) {
-      if (onError != null) return onError(error, stacktrace);
-      rethrow;
-    }
+        return result;
+      },
+      (task, element) => (messageLog) => element.observe(
+            task: task,
+            logger: logger,
+            messageLog: messageLog,
+            printOutput: printOutput,
+          ),
+    )(messageLog);
   }
 
-  /// Converts the given [exception] into a [Failure].
+  /// Converts the given [error] into a [Failure].
   ///
-  /// The [exception] is expected to be an [Exception] object.
+  /// If no matching [ErrorConverter] is found, then a [StateError] is thrown.
   Failure convert({
-    required Exception exception,
-    List<ExceptionConverter<Exception, void>>? exceptionConverters,
+    required Object error,
+    List<ErrorConverter<Object, void>>? errorConverters,
   }) {
-    final extendedExceptionConverters =
-        _extendedExceptionConverters(exceptionConverters);
+    final extendedErrorConverters = _extendedErrorConverters(errorConverters);
 
-    for (final exceptionConverter in extendedExceptionConverters) {
-      if (exceptionConverter.exceptionEquals(exception)) {
-        return exceptionConverter.convert(exception);
+    for (final errorConverter in extendedErrorConverters) {
+      if (errorConverter.errorEquals(error)) {
+        return errorConverter.convert(error);
       }
     }
 
     // coverage:ignore-start
     throw StateError(
-      'No matching exception conversion found for ${exception.runtimeType}',
+      'No matching error conversion found for ${error.runtimeType}',
     );
     // coverage:ignore-end
   }
 
-  List<ExceptionConverter<Exception, T>> _extendedExceptionConverters<T>(
-    List<ExceptionConverter<Exception, T>>? exceptionConverters,
+  List<ErrorConverter<Object, T>> _extendedErrorConverters<T>(
+    List<ErrorConverter<Object, T>>? errorConverters,
   ) =>
       [
-        ...?exceptionConverters,
-        ...defaultExceptionConverters.map((e) => e<T>()),
+        ...?errorConverters,
+        ...defaultErrorConverters.map((e) => e<T>()),
         FallbackExceptionConverter<T>(),
       ];
 }

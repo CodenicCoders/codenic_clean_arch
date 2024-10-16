@@ -1,4 +1,4 @@
-import 'package:codenic_exception_converter/src/exception_converters/exception_converter.dart';
+import 'package:codenic_exception_converter/src/base_converters/exception_converter.dart';
 import 'package:codenic_exception_converter/src/failures/failure.dart';
 import 'package:codenic_logger/codenic_logger.dart';
 
@@ -13,18 +13,18 @@ final class FallbackExceptionConverter<T>
   const FallbackExceptionConverter();
 
   @override
-  Failure convert(Exception exception) => const Failure();
+  Failure convert(Exception error) => const Failure();
 
   @override
-  void logException(
-    Exception exception,
+  void logError(
+    Exception error,
     StackTrace stackTrace,
     CodenicLogger logger,
     MessageLog messageLog,
   ) {
     logger.error(
       messageLog..message = 'Unknown failure occurred',
-      error: exception,
+      error: error,
       stackTrace: stackTrace,
     );
   }

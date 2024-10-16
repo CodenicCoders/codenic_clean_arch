@@ -20,7 +20,7 @@ Future<void> _observeWithDefaultConverters() async {
   // Create an exception converter suite that can convert a `SocketException`
   // into a `NetworkFailure`
   final exceptionConverterSuite = ExceptionConverterSuite(
-    defaultExceptionConverters: [SocketExceptionConverter.new],
+    defaultErrorConverters: [SocketExceptionConverter.new],
   );
 
   final result = await exceptionConverterSuite.observe<void>(
@@ -41,7 +41,7 @@ Future<void> _observeWithArgConverters() async {
   final result = await exceptionConverterSuite.observe<void>(
     messageLog: MessageLog(id: 'observe-with-argument-converters'),
     // Provide an exception converter as an argument
-    exceptionConverters: [const SocketExceptionConverter()],
+    errorConverters: [const SocketExceptionConverter()],
     printOutput: true,
     task: (messageLog) {
       // Simulate exception
@@ -72,12 +72,12 @@ Future<void> _observeNoExceptionConverters() async {
 
 void _convert() {
   final exceptionConverterSuite = ExceptionConverterSuite(
-    defaultExceptionConverters: [SocketExceptionConverter.new],
+    defaultErrorConverters: [SocketExceptionConverter.new],
   );
 
   final result = exceptionConverterSuite.convert(
-    exception: const SocketException('test'),
-    exceptionConverters: [const SocketExceptionConverter()],
+    error: const SocketException('test'),
+    errorConverters: [const SocketExceptionConverter()],
   );
 
   print('Convert result: $result');
@@ -99,7 +99,7 @@ final class SocketExceptionConverter<T>
   Failure convert(SocketException exception) => const NetworkFailure();
 
   @override
-  void logException(
+  void logError(
     SocketException exception,
     StackTrace stackTrace,
     CodenicLogger logger,
