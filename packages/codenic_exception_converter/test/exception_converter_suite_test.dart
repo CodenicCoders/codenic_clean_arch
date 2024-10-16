@@ -182,6 +182,19 @@ void main() {
             },
           );
 
+          test('should handle an error', () async {
+            final result = await exceptionConverterSuite.observe<void>(
+              messageLog: messageLog,
+              task: (messageLog) => throw Error(),
+              onError: (error, stackTrace) => const Left(Failure()),
+            );
+
+            result.fold(
+              (l) => expect(l, isA<Failure>()),
+              (r) => throw StateError(''),
+            );
+          });
+
           test('should add `__output__` in `MessageLog` on success', () async {
             final result = await exceptionConverterSuite.observe<String>(
               messageLog: messageLog,
@@ -213,7 +226,7 @@ void main() {
             'should convert `SocketException` to `NetworkFailure`',
             () {
               final result = exceptionConverterSuite.convert(
-                error: const SocketException('test'),
+                exception: const SocketException('test'),
                 exceptionConverters: [const SocketExceptionConverter()],
               );
 
@@ -230,20 +243,10 @@ void main() {
               );
 
               final result = exceptionConverter.convert(
-                error: const SocketException('test'),
+                exception: const SocketException('test'),
               );
 
               expect(result, isA<SocketFailure>());
-            },
-          );
-
-          test(
-            'should throw an `ArgumentError` when an a non-exception is passed',
-            () {
-              expect(
-                () => exceptionConverterSuite.convert(error: 'Test'),
-                throwsA(isA<ArgumentError>()),
-              );
             },
           );
         },

@@ -76,7 +76,7 @@ void _convert() {
   );
 
   final result = exceptionConverterSuite.convert(
-    error: const SocketException('test'),
+    exception: const SocketException('test'),
     exceptionConverters: [const SocketExceptionConverter()],
   );
 

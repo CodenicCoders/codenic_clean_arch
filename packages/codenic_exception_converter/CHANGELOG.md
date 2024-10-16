@@ -1,3 +1,7 @@
+## 5.0.0
+- Make the `ExceptionConverterSuite.convert` accept only `Exception` types.
+- Add optional `onError` in `ExceptionConverterSuite.observe` to handle thrown `Error`s.
+
 ## 4.1.0
 - Add `code` in `Failure` to store the error code.
 
