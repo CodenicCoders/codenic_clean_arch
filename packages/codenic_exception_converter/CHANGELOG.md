@@ -1,3 +1,6 @@
+## 5.0.1
+- Improve docs
+
 ## 5.0.0
 - Make the `ExceptionConverterSuite.convert` accept only `Exception` types.
 - Add optional `onError` in `ExceptionConverterSuite.observe` to handle thrown `Error`s.

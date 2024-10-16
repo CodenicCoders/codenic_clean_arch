@@ -113,7 +113,7 @@ void main() {
             'when an exception is thrown',
             () async {
               final exceptionConverter = ExceptionConverterSuite(
-                exceptionConverters: [SocketExceptionConverter.new],
+                defaultExceptionConverters: [SocketExceptionConverter.new],
               );
 
               final result = await exceptionConverter.observe<void>(
@@ -239,7 +239,7 @@ void main() {
             'default exception converters',
             () {
               final exceptionConverter = ExceptionConverterSuite(
-                exceptionConverters: [SocketExceptionConverter.new],
+                defaultExceptionConverters: [SocketExceptionConverter.new],
               );
 
               final result = exceptionConverter.convert(

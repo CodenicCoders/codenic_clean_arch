@@ -15,7 +15,7 @@ typedef ExceptionConverterFactory = ExceptionConverter<Exception, T>
 class ExceptionConverterSuite {
   /// {@macro ExceptionConverter}
   ExceptionConverterSuite({
-    this.exceptionConverters = const [],
+    this.defaultExceptionConverters = const [],
     CodenicLogger? logger,
   }) : logger = logger ?? CodenicLogger() {
     _addPredefinedStackTraceBlocklist();
@@ -56,15 +56,13 @@ class ExceptionConverterSuite {
   /// The default [ExceptionConverter]s used to convert [Exception]s into
   /// [Failure]s.
   ///
-  /// This is used by [observe] and [convert].
-  final List<ExceptionConverterFactory> exceptionConverters;
+  /// Here you can provide your own default [ExceptionConverter]s to convert
+  /// [Exception]s into [Failure]s which will be used by the [observe] and
+  /// [convert] methods.
+  final List<ExceptionConverterFactory> defaultExceptionConverters;
 
   /// The default logger used by [observe].
   final CodenicLogger logger;
-
-  List<ExceptionConverter<Exception, T>> _exceptionConverters<T>() {
-    return exceptionConverters.map((e) => e<T>()).toList();
-  }
 
   /// Converts any uncaught [Exception] thrown by the [task] into a [Failure].
   ///
@@ -77,9 +75,9 @@ class ExceptionConverterSuite {
   ///
   /// If an [Exception] is thrown, then it will be converted into a [Failure]
   /// using the [ExceptionConverter]s provided in the [exceptionConverters]
-  /// and [ExceptionConverterSuite.exceptionConverters], if any. If no matching
-  /// [ExceptionConverter] is found, then the [FallbackExceptionConverter] will
-  /// be used.
+  /// and [ExceptionConverterSuite.defaultExceptionConverters], if any. If no
+  /// matching [ExceptionConverter] is found, then the
+  /// [FallbackExceptionConverter] will be used.
   ///
   /// If an [Error] is thrown, then it will be rethrown or handled by the
   /// [onError] function, if provided.
@@ -154,7 +152,7 @@ class ExceptionConverterSuite {
   ) =>
       [
         ...?exceptionConverters,
-        ..._exceptionConverters<T>(),
+        ...defaultExceptionConverters.map((e) => e<T>()),
         FallbackExceptionConverter<T>(),
       ];
 }

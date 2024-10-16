@@ -20,7 +20,7 @@ Future<void> _observeWithDefaultConverters() async {
   // Create an exception converter suite that can convert a `SocketException`
   // into a `NetworkFailure`
   final exceptionConverterSuite = ExceptionConverterSuite(
-    exceptionConverters: [SocketExceptionConverter.new],
+    defaultExceptionConverters: [SocketExceptionConverter.new],
   );
 
   final result = await exceptionConverterSuite.observe<void>(
@@ -72,7 +72,7 @@ Future<void> _observeNoExceptionConverters() async {
 
 void _convert() {
   final exceptionConverterSuite = ExceptionConverterSuite(
-    exceptionConverters: [SocketExceptionConverter.new],
+    defaultExceptionConverters: [SocketExceptionConverter.new],
   );
 
   final result = exceptionConverterSuite.convert(
