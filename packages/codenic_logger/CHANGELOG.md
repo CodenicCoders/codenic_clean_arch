@@ -1,3 +1,6 @@
+## 4.1.0
+- JSON encode the `data` field in `MessageLog` when printing logs.
+
 ## 4.0.2
 - Bump dependency versions.
 - Deprecate `MessageLogPrinter.printTime`.

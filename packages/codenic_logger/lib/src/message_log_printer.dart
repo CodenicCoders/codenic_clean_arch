@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:codenic_logger/src/map_extension.dart';
 import 'package:codenic_logger/src/message_log.dart';
 import 'package:logger/logger.dart';
 
@@ -261,7 +263,7 @@ class MessageLogPrinter extends PrettyPrinter {
     if (messageLog.data.isNotEmpty) {
       if (_includeBox[level]!) buffer.add(color(_createDivider('Data')));
 
-      final data = messageLog.data.toString();
+      final data = jsonEncode(messageLog.data.toJsonEncodable());
 
       _splitText(data).forEach((text) => buffer.add(color(text)));
     }
