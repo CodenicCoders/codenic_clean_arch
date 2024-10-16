@@ -1,3 +1,6 @@
+## 4.1.1
+- Downgrade `meta` from `1.16.0` to `1.15.0`.
+
 ## 4.1.0
 - JSON encode the `data` field in `MessageLog` when printing logs.
 
