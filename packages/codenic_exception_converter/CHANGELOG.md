@@ -1,3 +1,6 @@
+## 5.2.4
+- Bump `codenic_logger` to `4.1.2`.
+
 ## 5.2.3
 - Bump `codenic_logger` to `4.1.1`.
 
