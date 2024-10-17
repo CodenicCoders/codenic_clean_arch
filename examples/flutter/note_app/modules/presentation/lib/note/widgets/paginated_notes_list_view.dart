@@ -29,7 +29,7 @@ class _PaginatedNotesListViewState extends State<PaginatedNotesListView> {
     // Fetch the first page of note entries
     _fetchNoteEntries(0);
 
-    // Add a listener to the paging controller so that we can fetch the next 
+    // Add a listener to the paging controller so that we can fetch the next
     // page of note entries when the user scrolls to the end of the list
     _pagingController
         .addPageRequestListener((pageKey) => _fetchNoteEntries(pageKey));

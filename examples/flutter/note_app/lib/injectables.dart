@@ -9,7 +9,7 @@ import 'package:infrastructure/data_sources/sqlbrite/sqlbrite_data_source.dart';
 import 'package:infrastructure/note/note_repository_impl.dart';
 import 'package:presentation/presentation.dart';
 
-/// Initializes the service locator by registering all external dependencies, 
+/// Initializes the service locator by registering all external dependencies,
 /// data sources, repositories and use cases.
 void initializeServiceLocator() {
   serviceLocator.registerLazySingleton<ExceptionConverterSuite>(

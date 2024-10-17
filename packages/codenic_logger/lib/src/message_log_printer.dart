@@ -33,13 +33,14 @@ import 'package:logger/logger.dart';
 class MessageLogPrinter extends PrettyPrinter {
   /// {@macro MessageLogPrinter}
   MessageLogPrinter({
+    super.printTime = true,
+    this.splitTextByCharacterCount = 1024,
     super.stackTraceBeginIndex,
     super.methodCount,
     super.errorMethodCount,
     super.lineLength,
     super.colors,
     super.printEmojis,
-    super.printTime = true,
     super.excludeBox,
     super.noBoxingByDefault,
     List<RegExp>? stackTraceBlocklist,
@@ -66,6 +67,18 @@ class MessageLogPrinter extends PrettyPrinter {
   /// stackTraceBlocklist: [RegExp(r'logger')]
   /// ```
   final List<RegExp> stackTraceBlocklist;
+
+  /// The maximum number of characters in a single line of the output.
+  ///
+  /// If the text is longer than this value, it will be split into multiple
+  /// lines.
+  ///
+  /// If `null`, the text will not be split.
+  ///
+  /// This is useful for preventing Android/IOS log messages from being
+  /// truncated.
+  ///
+  final int? splitTextByCharacterCount;
 
   /// Matches a stacktrace line as generated on Android/iOS devices.
   /// For example:
@@ -257,15 +270,14 @@ class MessageLogPrinter extends PrettyPrinter {
 
     if (message != null) {
       if (_includeBox[level]!) buffer.add(color(_createDivider('Message')));
-      _splitText(message).forEach((text) => buffer.add(color(text)));
+      _trySplitText(message).forEach((text) => buffer.add(color(text)));
     }
 
     if (messageLog.data.isNotEmpty) {
       if (_includeBox[level]!) buffer.add(color(_createDivider('Data')));
 
       final data = jsonEncode(messageLog.data.toJsonEncodable());
-
-      _splitText(data).forEach((text) => buffer.add(color(text)));
+      _trySplitText(data).forEach((text) => buffer.add(color(text)));
     }
 
     if (_includeBox[level]!) buffer.add(color(_createDivider()));
@@ -280,8 +292,13 @@ class MessageLogPrinter extends PrettyPrinter {
   }
 
   /// Flutter truncates
-  Iterable<String> _splitText(String text) =>
-      RegExp('.{1,1023}').allMatches(text).map((e) => e.group(0) ?? '');
+  Iterable<String> _trySplitText(String text) {
+    if (splitTextByCharacterCount == null) return [text];
+
+    return RegExp('.{1,$splitTextByCharacterCount}')
+        .allMatches(text)
+        .map((e) => e.group(0) ?? '');
+  }
 
   // coverage:ignore-start
   /// Creates a new [MessageLogPrinter] with the values replaced by the

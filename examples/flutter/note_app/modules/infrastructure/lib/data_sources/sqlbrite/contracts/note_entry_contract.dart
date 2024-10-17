@@ -30,7 +30,7 @@ class NoteEntryContract {
     )
   ''';
 
-  /// Constructs a SQL query for inserting one or more new note entries into 
+  /// Constructs a SQL query for inserting one or more new note entries into
   /// the database.
   static String insertQuery([int count = 1]) {
     final buffer = StringBuffer('''

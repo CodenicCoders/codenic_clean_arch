@@ -1,3 +1,7 @@
+## 4.1.2
+- Add `MessageLogPrinter.splitTextByCharacterCount` to control the number of 
+characters per line when printing logs.
+
 ## 4.1.1
 - Downgrade `meta` from `1.16.0` to `1.15.0`.
 
