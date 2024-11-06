@@ -1,3 +1,6 @@
+## 6.1.0
+- Bump `codenic_exception_converter` to `5.2.4`.
+
 ## 6.0.1
 - Bump `codenic_exception_converter` to `4.0.1`.
 
