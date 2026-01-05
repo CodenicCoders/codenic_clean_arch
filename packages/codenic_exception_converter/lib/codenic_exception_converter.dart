@@ -1,4 +1,3 @@
-export 'package:codenic_logger/codenic_logger.dart';
 export 'package:equatable/equatable.dart';
 export 'package:fpdart/fpdart.dart' show Either, Left, Right;
 

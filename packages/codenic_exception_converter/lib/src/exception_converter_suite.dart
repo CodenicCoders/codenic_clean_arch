@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:codenic_exception_converter/codenic_exception_converter.dart';
-import 'package:codenic_exception_converter/src/exception_converters/fallback_exception_converter.dart';
 
 /// A signature for [ErrorConverter] factories.
 typedef ErrorConverterFactory = ErrorConverter<Object, T> Function<T>();
+
+typedef TaskCallback<T> = FutureOr<Either<Failure, T>> Function(String tag);
 
 /// {@template ExceptionConverterSuite}
 /// A class which allows multiple [ErrorConverter]s to be grouped together,
@@ -13,44 +14,7 @@ typedef ErrorConverterFactory = ErrorConverter<Object, T> Function<T>();
 /// {@endtemplate}
 class ExceptionConverterSuite {
   /// {@macro ExceptionConverterSuite}
-  ExceptionConverterSuite({
-    this.defaultErrorConverters = const [],
-    CodenicLogger? logger,
-  }) : logger = logger ?? CodenicLogger() {
-    _addPredefinedStackTraceBlocklist();
-  }
-
-  /// Appends some predefined stack trace lines to the [logger]'s
-  /// stack trace blocklist to remove lines from the
-  /// `codenic_exception_converter`, `codenic_bloc_use_case` and `fpdart`
-  /// packages.
-  void _addPredefinedStackTraceBlocklist() {
-    final stackTraceBlocklistAddons = [
-      RegExp(r'(packages\/|package:)codenic_exception_converter'),
-      RegExp(r'(packages\/|package:)codenic_bloc_use_case'),
-      RegExp(r'(packages\/|package:)fpdart'),
-      RegExp(r'^<asynchronous suspension>$'),
-    ];
-
-    if (logger.printer.stackTraceBlocklist.isEmpty) {
-      logger.printer.stackTraceBlocklist.addAll(stackTraceBlocklistAddons);
-    } else {
-      for (final regExpAddon in stackTraceBlocklistAddons) {
-        var isAlreadyAdded = false;
-
-        for (final regExp in logger.printer.stackTraceBlocklist) {
-          if (regExp.pattern == regExpAddon.pattern) {
-            isAlreadyAdded = true;
-            continue;
-          }
-        }
-
-        if (!isAlreadyAdded) {
-          logger.printer.stackTraceBlocklist.add(regExpAddon);
-        }
-      }
-    }
-  }
+  ExceptionConverterSuite({this.defaultErrorConverters = const []});
 
   /// The default [ErrorConverter]s used to convert errors into [Failure]s.
   ///
@@ -58,9 +22,6 @@ class ExceptionConverterSuite {
   /// errors into [Failure]s which will be used by the [observe] and
   /// [convert] methods.
   final List<ErrorConverterFactory> defaultErrorConverters;
-
-  /// The default logger used by [observe].
-  final CodenicLogger logger;
 
   /// Converts any uncaught errors thrown by the [task] into a [Failure].
   ///
@@ -78,37 +39,17 @@ class ExceptionConverterSuite {
   /// will be used for thrown [Exception]s. Otherwise, the [Error] will be
   /// thrown as is.
   FutureOr<Either<Failure, T>> observe<T>({
-    required FutureOr<Either<Failure, T>> Function(MessageLog? messageLog) task,
+    required String tag,
+    required TaskCallback<T> task,
     List<ErrorConverter<Object, T>>? errorConverters,
-    MessageLog? messageLog,
-    bool printOutput = false,
   }) async {
     final extendedErrorConverters =
         _extendedErrorConverters<T>(errorConverters);
 
-    return await extendedErrorConverters
-        .fold<FutureOr<Either<Failure, T>> Function(MessageLog? messageLog)>(
-      (messageLog) async {
-        final result = await task(messageLog);
-
-        if (messageLog != null) {
-          if (printOutput) messageLog.data['__output__'] = result;
-
-          result.fold(
-            (l) => logger.warn(messageLog),
-            (r) => logger.info(messageLog),
-          );
-        }
-
-        return result;
-      },
-      (task, element) => (messageLog) => element.observe(
-            task: task,
-            logger: logger,
-            messageLog: messageLog,
-            printOutput: printOutput,
-          ),
-    )(messageLog);
+    return await extendedErrorConverters.fold<TaskCallback<T>>(
+      (tag) async => await task(tag),
+      (task, element) => (tag) => element.observe(tag: tag, task: task),
+    )(tag);
   }
 
   /// Converts the given [error] into a [Failure].
@@ -139,6 +80,5 @@ class ExceptionConverterSuite {
       [
         ...?errorConverters,
         ...defaultErrorConverters.map((e) => e<T>()),
-        FallbackExceptionConverter<T>(),
       ];
 }

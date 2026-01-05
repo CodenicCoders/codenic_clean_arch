@@ -11,8 +11,6 @@ Future<void> main() async {
   print('');
   await _observeWithArgConverters();
   print('');
-  await _observeNoExceptionConverters();
-  print('');
   _convert();
 }
 
@@ -24,8 +22,7 @@ Future<void> _observeWithDefaultConverters() async {
   );
 
   final result = await exceptionConverterSuite.observe<void>(
-    messageLog: MessageLog(id: 'observe-with-default-converters'),
-    printOutput: true,
+    tag: 'observe-with-default-converters',
     task: (messageLog) {
       // Simulate exception
       throw const SocketException('test');
@@ -39,10 +36,9 @@ Future<void> _observeWithArgConverters() async {
   final exceptionConverterSuite = ExceptionConverterSuite();
 
   final result = await exceptionConverterSuite.observe<void>(
-    messageLog: MessageLog(id: 'observe-with-argument-converters'),
+    tag: 'observe-with-argument-converters',
     // Provide an exception converter as an argument
     errorConverters: [const SocketExceptionConverter()],
-    printOutput: true,
     task: (messageLog) {
       // Simulate exception
       throw const SocketException('test');
@@ -50,24 +46,6 @@ Future<void> _observeWithArgConverters() async {
   );
 
   print('Observe (with argument exception converters): $result');
-}
-
-Future<void> _observeNoExceptionConverters() async {
-  final exceptionConverterSuite = ExceptionConverterSuite();
-
-  final result = await exceptionConverterSuite.observe<void>(
-    messageLog: MessageLog(id: 'observe-with-no-exception-converters'),
-    task: (messageLog) {
-      try {
-        // Simulate exception
-        throw const SocketException('test');
-      } on SocketException {
-        return const Left(NetworkFailure());
-      }
-    },
-  );
-
-  print('Observe (no exception converter): $result');
 }
 
 void _convert() {
@@ -100,10 +78,9 @@ final class SocketExceptionConverter<T>
 
   @override
   void logError(
+    String tag,
     SocketException exception,
     StackTrace stackTrace,
-    CodenicLogger logger,
-    MessageLog messageLog,
   ) =>
-      logger.error(messageLog, error: exception, stackTrace: stackTrace);
+      print('logError: $tag, $exception');
 }

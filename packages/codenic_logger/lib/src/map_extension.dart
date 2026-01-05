@@ -28,10 +28,15 @@ extension MapExtension on Map<String, dynamic> {
         return value.map(_toJsonEncodableValue).toList();
       case Set():
         return value.map(_toJsonEncodableValue).toList();
+      case DateTime():
+        return value.toString();
       default:
         try {
           return jsonEncode(value);
-        } catch (e) {
+        }
+        // We want to turn all non-JSON encodable values to strings.
+        // ignore: avoid_catches_without_on_clauses
+        catch (_) {
           return value.toString();
         }
     }

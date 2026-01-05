@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'dart:convert';
 import 'dart:math';
 
@@ -235,7 +233,6 @@ class MessageLogPrinter extends PrettyPrinter {
     String? stacktrace,
   ) {
     // This code is non trivial and a type annotation here helps understanding.
-    // ignore: omit_local_variable_types
     final buffer = <String>[];
 
     final color = _getLevelColor(level);
