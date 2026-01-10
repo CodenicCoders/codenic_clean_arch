@@ -43,7 +43,7 @@ void logError() {
 
   try {
     throw Exception('Test exception');
-  } catch (exception, stackTrace) {
+  } on Exception catch (exception, stackTrace) {
     codenicLogger.error(
       messageLog..message = 'An unknown error occurred',
       error: exception,

@@ -1,3 +1,6 @@
+## 4.1.3
+- Bump dependency versions.
+
 ## 4.1.2
 - Add `MessageLogPrinter.splitTextByCharacterCount` to control the number of 
 characters per line when printing logs.

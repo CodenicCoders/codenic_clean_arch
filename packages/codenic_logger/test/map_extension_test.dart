@@ -122,6 +122,36 @@ void main() {
           expect(jsonEncodableMap['key'], ['2021-01-01 00:00:00.000']);
         },
       );
+
+      test(
+        'should encode uri with toString',
+        () {
+          // Assign
+          final map = <String, dynamic>{
+            'key': Uri.parse('https://example.com'),
+          };
+
+          // Act
+          final jsonEncodableMap = map.toJsonEncodable();
+
+          // Assert
+          expect(jsonEncodableMap['key'], 'https://example.com');
+        },
+      );
+
+      test(
+        'should encode duration with toString',
+        () {
+          // Assign
+          final map = <String, dynamic>{'key': const Duration(seconds: 5)};
+
+          // Act
+          final jsonEncodableMap = map.toJsonEncodable();
+
+          // Assert
+          expect(jsonEncodableMap['key'], '0:00:05.000000');
+        },
+      );
     },
   );
 }

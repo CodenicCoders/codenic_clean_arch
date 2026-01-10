@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 /// {@template MessageLog}
-///
 /// A container for log information.
-///
 /// {@endtemplate}
+// This class is mutable, so we need to mark it as mutable.
+// ignore: must_be_immutable
 class MessageLog with EquatableMixin {
   /// {@macro MessageLog}
   MessageLog({
