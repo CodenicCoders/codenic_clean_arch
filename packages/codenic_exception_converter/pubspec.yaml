@@ -1,6 +1,6 @@
 name: codenic_exception_converter
 description: A utility tool for converting Exception into Failure objects to make your code more portable and easier to maintain.
-version: 5.2.4
+version: 5.2.5
 repository: https://github.com/CodenicCoders/codenic_clean_arch/tree/main/packages/codenic_exception_converter
 issue_tracker: https://github.com/CodenicCoders/codenic_clean_arch/issues
 homepage: https://arch.codenic.dev
@@ -10,12 +10,12 @@ environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
-  codenic_logger: ^4.1.2
-  equatable: ^2.0.5
-  fpdart: ^1.1.0  
+  codenic_logger: ^4.1.3
+  equatable: ^2.0.8
+  fpdart: ^1.2.0  
 
 dev_dependencies:
-  bloc_test: ^9.1.7
+  bloc_test: ^10.0.0
   mocktail: ^1.0.4
-  test: ^1.25.8
-  very_good_analysis: ^6.0.0
+  test: ^1.29.0
+  very_good_analysis: ^10.0.0

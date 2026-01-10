@@ -1,10 +1,7 @@
 import 'dart:io';
 
 import 'package:codenic_exception_converter/codenic_exception_converter.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
-
-class MockLogger extends Mock implements CodenicLogger {}
 
 class SocketFailure extends Failure {
   const SocketFailure({
